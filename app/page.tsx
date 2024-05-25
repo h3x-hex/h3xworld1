@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { useEmbeddedWallet } from "@thirdweb-dev/react";
 import Login from "components/Login";
-import LoginWrapper from "components/LoginWrapper";
+import LoginUser from "components/LoginUser";
 
 export default function HomePage() {
 
@@ -12,7 +11,7 @@ export default function HomePage() {
           Welcome to <span className="text-[hsl(0,0%,100%)]">h</span><span className="text-[#fdb702]">3</span>x<span className="text-[hsl(0,0%,38%)]">|</span>World
         </h1>
         <p className="text-l">Web3 XR Minimalistic Social Media for truly connecting people. Get your link up and Link up!</p>
-        <LoginWrapper/>
+        <LoginUser/>
       </div>
     </main>
   );
