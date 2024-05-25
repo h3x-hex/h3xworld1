@@ -1,3 +1,5 @@
+"use client"
+
 import { auth, firestore } from "config/firebase.config";
 import { useAuth } from "context/AuthContext";
 import { useRouter } from "node_modules/next/navigation";

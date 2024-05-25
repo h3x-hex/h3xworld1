@@ -76,7 +76,6 @@ export default function Profile({ username }: IProps) {
   return (
     <>
       <div className="bg-zinc-950">
-      
         <Navbar isLoggedIn={ isLoggedIn }/>
         { profile ? 
           <ProfileCard profile={ profile }/>
