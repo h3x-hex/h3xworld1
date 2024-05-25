@@ -76,17 +76,7 @@ export default function Profile({ username }: IProps) {
   return (
     <>
       <div className="bg-zinc-950">
-      <ThirdwebProvider
-        clientId={process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID}
-        activeChain={"mumbai"}
-        supportedWallets={[
-          embeddedWallet({
-            auth: {
-              options: ["email"],
-            },
-          }),
-        ]}
-      >
+      
         <Navbar isLoggedIn={ isLoggedIn }/>
         { profile ? 
           <ProfileCard profile={ profile }/>
@@ -105,9 +95,7 @@ export default function Profile({ username }: IProps) {
           </div>
 
         }
-        
-      </ThirdwebProvider>
-    </div>
+      </div>
     </>
   );
 }
