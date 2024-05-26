@@ -1,6 +1,14 @@
 import LoginUser from "components/LoginUser";
+import { useRouter } from "node_modules/next/navigation";
+import { getAuth } from "firebase/auth";
 
 export default function HomePage() {
+
+  const auth = getAuth()
+  const user = auth.currentUser
+  const router = useRouter();
+
+  if(user) router.push(`/profile/${user.displayName}`);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#101010] to-[#1d1d1d] text-white">
