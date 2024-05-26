@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import "react-quill/dist/quill.bubble.css";
 import { useRouter } from "next/navigation";
 import { getAuth } from "firebase/auth";
@@ -17,34 +16,7 @@ import { Navbar } from "components/Navbar";
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
-import Editor from "components/Editor1";
-import LexicalEditorWrapper from "components/LexicalEditorWrapper/index";
-import { $getRoot, $getSelection } from "lexical";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { MuiContentEditable, placeHolderSx } from "./styles";
-import { Box, Divider } from "@mui/material";
-import { lexicalEditorConfig } from "../../../config/lexicalEditorConfig";
-import LexicalEditorTopBar from "../../components/LexicalEditorTopBar";
-import TreeViewPlugin from "../../components/CustomPlugins/TreeViewPlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import ImagesPlugin from "../../components/CustomPlugins/ImagePlugin";
-import FloatingTextFormatToolbarPlugin from "../../components/CustomPlugins/FloatingTextFormatPlugin";
-import {$generateHtmlFromNodes} from '@lexical/html';
-import lexicalEditorTheme from "../../theme/lexicalEditorTheme";
-import { AutoLinkNode, LinkNode } from "@lexical/link";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { TableNode, TableCellNode, TableRowNode } from "@lexical/table";
-import { ListNode, ListItemNode } from "@lexical/list";
-import { ImageNode } from "../../components/CustomNodes/ImageNode";
 import { PostType, PostPreview, PostBody, UserProfileType, PostUser } from "types/types";
-import { use } from "chai";
 
 
 //import ExampleTheme from '/ExampleTheme';
@@ -63,9 +35,6 @@ const Page = () => {
     }
     var isLoggedIn = false;
 
-    if(user) isLoggedIn = true;
-
-    
     const [value, setValue] = useState<string>("");
     var postUser: PostUser = {
       userId: "",
@@ -85,7 +54,7 @@ const Page = () => {
       postId: "",
     };
     const [title, setTitle] = useState<string>("");
-    const [username, setUsername] = useState<string>(user.displayName);
+    const [username, setUsername] = useState<string>("");
     const [preview, setPreview] = useState<PostPreview>({
       postTitle: "",
       postPreview: "",
@@ -98,7 +67,7 @@ const Page = () => {
       previewPhotoURL: "",
       postId: "",
     };
-    const [image, setImage] = useState<File>();
+    const [image, setImage] = useState<File | string>();
     const [previewImage, setPreviewImage] = useState<File>();
     const [imagePicked, setImagePicked] = useState<boolean>(false);
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
@@ -133,7 +102,13 @@ const Page = () => {
       postCount: 0,
       friends: [],
     };
-    const fileUploadRef = useRef(null);
+    const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
+
+    if(user)
+    {
+      isLoggedIn = true;
+      setUsername(user.displayName as string);
+    }
     
     useEffect(() => {
       async function getData(username: string) {
@@ -144,7 +119,7 @@ const Page = () => {
         {
           const profileObj = { ...userProfileDoc.data() };
           profileV = profileObj as UserProfileType;
-          setProfile(profileObj);
+          setProfile(profileV);
           username = (profileObj.username);
           console.log(profile);
           console.log(profileObj.posts);
@@ -167,8 +142,9 @@ const Page = () => {
     const handleUpload = async () => {
       // We will fill this out later
       handleFileChange;
+      if(!fileUploadRef.current.files) return;
       const uploadedFile = fileUploadRef.current.files[0];
-      const cachedURL = URL.createObjectURL(uploadedFile);
+      const cachedURL = URL.createObjectURL(uploadedFile as Blob|MediaSource);
       setImage(cachedURL);
     };
 
@@ -189,8 +165,10 @@ const Page = () => {
 
     const uploadPost = async (body: string) => {
 
+      if(!user) return;
+
       const time = new Date().getTime();
-      const uName = user.displayName;
+      const uName = profile.username;
       const postCount = profile.postCount + 1;
       const postID =  uName + time + postCount;
       
@@ -205,10 +183,10 @@ const Page = () => {
       };
 
       postUser = {
-        userId: user.uid,
-        username: uName,
+        userId: profile.id,
+        username: username,
         fullName: profile.fullName,
-        userPhotoURL: user.photoURL,
+        userPhotoURL: profile.profilePhotoURL,
         location: profile.location,
         occupation: profile.occupation,
       };
@@ -281,7 +259,7 @@ const Page = () => {
                       <button className="btn btn-square">
                         <div className="avatar placeholder h-60">
                           <div className="bg-neutral text-neutral-content w-64 rounded">
-                            {imagePicked ? <img src={image}/> : <span className="text-3xl px-3">Post Preview Image</span>}
+                            {imagePicked ? <img src={image as string}/> : <span className="text-3xl px-3">Post Preview Image</span>}
                           </div>
                         </div> 
                         <input type={"file"} accept="image/*" className="pr-24" onChange={uploadFile} ref={fileUploadRef}/>
@@ -293,43 +271,6 @@ const Page = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative">
-                  <LexicalComposer initialConfig={{
-                    editorState: initialEditorState,
-                    namespace: "MyEditor",
-                    theme: lexicalEditorTheme,
-                    nodes: [
-                      HeadingNode,
-                      ListNode,
-                      ListItemNode,
-                      QuoteNode,
-                      CodeNode,
-                      CodeHighlightNode,
-                      TableNode,
-                      TableCellNode,
-                      TableRowNode,
-                      AutoLinkNode,
-                      LinkNode,
-                      ImageNode,
-                    ],
-                  }}>
-                    <LexicalEditorTopBar/>
-                    <Divider />
-                    <Box className="bg-zinc-950" sx={{position: "relative"}}>
-                      <RichTextPlugin //#312D4B
-                        contentEditable={<MuiContentEditable className="h-auto"/>}
-                        placeholder={<Box className="absolute top-0" sx={placeHolderSx}>Write your story...</Box>}
-                        ErrorBoundary={LexicalErrorBoundary}
-                      />
-                      <OnChangePlugin onChange={editorState => editorStateRef.current = editorState} />
-                      <ListPlugin />
-                      <LinkPlugin />
-                      <ImagesPlugin captionsEnabled={false} />
-                      <FloatingTextFormatToolbarPlugin />
-                    </Box>
-                  </LexicalComposer>
-                </div>
-
                 <div className="py-8">
                   <button className="btn btn-circle btn-outline btn-warning w-36 " onClick={() => uploadPost(JSON.stringify(editorStateRef.current))}>Publish</button>
                 </div>

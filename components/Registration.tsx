@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "context/AuthContext";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, MutableRefObject, useRef, useState } from "react";
 import { UserRegistrationType } from "types/types";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
@@ -35,7 +35,7 @@ export default function Registration() :JSX.Element {
       const [imagePicked, setImagePicked] = useState<boolean>(false);
       const [profilePhoto, setProfilePhoto] = useState<File>();
       const [image, setImage] = useState<File | string>("https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg");
-      const fileUploadRef = useRef(null);
+      const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
       const [buyCard, setBuyCard] = useState<boolean>(false);
 
 
@@ -51,8 +51,9 @@ export default function Registration() :JSX.Element {
       {
         // We will fill this out later
         handleFileChange;
+        if(!fileUploadRef.current.files) return;
         const uploadedFile = fileUploadRef.current.files[0];
-        const cachedURL = URL.createObjectURL(uploadedFile);
+        const cachedURL = URL.createObjectURL(uploadedFile as Blob|MediaSource);
         setImage(cachedURL);
       };
 
@@ -113,7 +114,7 @@ export default function Registration() :JSX.Element {
         if (image)
         { 
           const storageRef = ref(storage, `Users/${data.username}`);
-          const uploadTask = uploadBytesResumable(storageRef, profilePhoto);
+          const uploadTask = uploadBytesResumable(storageRef, profilePhoto as Blob | Uint8Array | ArrayBuffer);
           var photoURL = "";
           uploadTask.on(
             "state_changed",
@@ -136,7 +137,7 @@ export default function Registration() :JSX.Element {
                 setDoc(usersRef, data);
                 setDoc(usersRef, { id: uid, profilePhotoURL: photoURL, links:link, posts: [] }, { merge: true });
 
-                updateProfile(auth.currentUser, {
+                updateProfile(auth!.currentUser!, {
                   displayName: data.username, photoURL: photoURL
                 }).then(() => {
                   // Profile updated!
@@ -204,7 +205,7 @@ export default function Registration() :JSX.Element {
                 <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
                     <div className="avatar gap-4">
                         <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                            <img src={image} width={256} height={256}/>
+                            <img src={image as string} width={256} height={256}/>
                         </div>
                     </div>
 

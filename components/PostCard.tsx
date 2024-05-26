@@ -1,22 +1,6 @@
 import { PostBody, PostPreview, PostType } from "types/types"
-import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { $insertNodes } from 'lexical';
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { useEffect, useRef, useState } from "react";
-import { MuiContentEditable } from "./LexicalEditorWrapper/styles";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import ImagesPlugin from "./CustomPlugins/ImagePlugin";
-import { AutoLinkNode, LinkNode } from "@lexical/link";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { TableNode, TableCellNode, TableRowNode } from "@lexical/table";
-import { ListNode, ListItemNode } from "@lexical/list";
-import { ImageNode } from "./CustomNodes/PostImageNode";
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { getAuth } from "firebase/auth";
-import { router } from "next/navigation";
 import { useRouter } from "node_modules/next/navigation";
 import { firestore, storage } from "config/firebase.config";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
@@ -32,10 +16,6 @@ interface IProps{
 
 export default function PostCard ({post, fullPost}: IProps) {
 
-    
-    function onError(error) {
-        console.error(error);
-    }
     console.log(post.preview.postId);
 
     const auth = getAuth();
@@ -49,36 +29,6 @@ export default function PostCard ({post, fullPost}: IProps) {
 
     console.log(post.postBody.likes);
 
-    const editorStateRef = useRef();
-    const initialConfig = {
-        editable: false,
-        onError,
-        editorState: (editor) => {
-          editor.update(() => {
-            const editorState = editor.parseEditorState(post.postBody.body);
-            editor.setEditorState(editorState);
-            const htmlString = $generateHtmlFromNodes(editor, null);
-            const parser = new DOMParser();
-            const dom = parser.parseFromString(htmlString, 'text/html');
-            const nodes = $generateNodesFromDOM(editor, dom);
-            $insertNodes(nodes);
-          })
-        },
-        nodes: [
-            HeadingNode,
-            ListNode,
-            ListItemNode,
-            QuoteNode,
-            CodeNode,
-            CodeHighlightNode,
-            TableNode,
-            TableCellNode,
-            TableRowNode,
-            AutoLinkNode,
-            LinkNode,
-            ImageNode,
-          ],
-      }
     
     const openPost = () => {
 
@@ -104,8 +54,11 @@ export default function PostCard ({post, fullPost}: IProps) {
         if (userProfileDoc.exists()) 
         {
           const profileObj = { ...userProfileDoc.data() };
-          setIsLiked((post.postBody.likes.includes(user.uid)));
-          console.log(isLiked, user.uid, post.postBody.likes);
+          if(user)
+          {
+            setIsLiked((post.postBody.likes.includes(user.uid)));
+            console.log(isLiked, user.uid, post.postBody.likes);
+          }
         } 
         else 
         {
@@ -113,7 +66,7 @@ export default function PostCard ({post, fullPost}: IProps) {
         }
   
       }
-      getData(user ? user.displayName : "");
+      if(user) getData(user.displayName as string);
     }, []);
 
     

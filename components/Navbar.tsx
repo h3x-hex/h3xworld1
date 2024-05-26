@@ -1,6 +1,5 @@
 "use client"
 
-import {ConnectWallet, useAddress} from "app/thirdweb";
 import { ChangeEvent, useRef, useState } from 'react';
 import { PostType } from 'types/types';
 import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
@@ -8,7 +7,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { getAuth, signOut } from 'firebase/auth';
 import { firestore, storage } from 'config/firebase.config';
 import {useRouter} from "next/navigation";
-import { use } from "chai";
 
 
 interface IProps {
@@ -25,7 +23,7 @@ export const Navbar = ({isLoggedIn, write}: IProps) => {
 
     if(user){
         isLoggedIn = true;
-        username = user.displayName;
+        username = user!.displayName!;
 
     }
 
@@ -75,15 +73,15 @@ export const Navbar = ({isLoggedIn, write}: IProps) => {
                         <button className="btn btn-outline btn-warning btn-circle w-36" onClick={openCreatePost}>Create Post</button>
                         <div tabIndex={0} role="button" className="avatar dropdown dropdown-bottom dropdown-end px-3">
                             <div className="w-12 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-1">
-                                <img src={user.photoURL} />
+                                <img src={user!.photoURL!} />
                             </div>
-                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-72">
+                            <ul tabIndex={0} className="dropdown-content z-[1] menu mt-3 p-2 shadow bg-base-100 rounded-box w-72">
                                 <li>
-                                    <div tabIndex={0} role="button" className="avatar" onClick={router.push(`/profile/${user.displayName}`)}>
+                                    <div tabIndex={0} role="button" className="avatar" onClick={() => router.push(`/profile/${user!.displayName!}`)}>
                                         <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                                            <img src={user.photoURL}/>
+                                            <img src={user!.photoURL!}/>
                                         </div>
-                                        <h1 className="text-xl">{user.displayName}</h1>
+                                        <h1 className="text-xl pl-3">{user!.displayName!}</h1>
                                     </div>
                                 </li>
                                 <li>

@@ -4,11 +4,11 @@ import { AuthContextProvider } from "context/AuthContext";
 import { UserProfileType } from "types/types";
 
 
-function Page() {
+function Page({params}: {params: {username: string}}) {
 
     return (
         <AuthContextProvider>
-            <EditProfile/>
+            <EditProfile username={params.username}/>
         </AuthContextProvider>
     )
 }

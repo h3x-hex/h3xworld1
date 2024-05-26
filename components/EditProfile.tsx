@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "context/AuthContext";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MutableRefObject, useEffect, useRef, useState } from "react";
 import { UserProfileType, UserRegistrationType } from "types/types";
 import { setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
@@ -10,8 +10,11 @@ import { firestore, storage } from "config/firebase.config";
 import { useRouter } from "next/navigation";
 import { Navbar } from "./Navbar";
 
+interface IProps{
+  username: string
+}
 
-export default function EditProfile() : JSX.Element {
+export default function EditProfile({username}: IProps) : JSX.Element {
 
     const { signUp } = useAuth();
     const auth = getAuth();
@@ -30,6 +33,7 @@ export default function EditProfile() : JSX.Element {
         bio: "",
         profilePhotoURL: "",
         postCount: 0,
+        friends: [],
       });
 
       const [password, setPassword] = useState("");
@@ -39,10 +43,9 @@ export default function EditProfile() : JSX.Element {
       const [profilePhotoURL, setProfilePhotoURL] = useState<string>("");
       const [image, setImage] = useState<File | string>(data.profilePhotoURL);
       const [profile, setProfile] = useState<UserProfileType>();
-      const fileUploadRef = useRef(null);
+      const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
 
       const user = auth.currentUser;
-      const username = user.displayName;
 
       var isLoggedIn = false;
 
@@ -56,9 +59,9 @@ export default function EditProfile() : JSX.Element {
           if (userProfileDoc.exists()) 
           {
             const profileObj = { ...userProfileDoc.data() };
-            setProfile(profileObj);
-            setData(profileObj);
-            setLinks(profileObj.links);
+            setProfile(profileObj as UserProfileType);
+            setData(profileObj as UserProfileType);
+            setLinks(profileObj.links as string[]);
             setImage(data.profilePhotoURL);
             console.log(profileObj);
             console.log(profileObj.posts);
@@ -84,8 +87,9 @@ export default function EditProfile() : JSX.Element {
       const handleUpload = async () => {
         // We will fill this out later
         handleFileChange;
+        if(!fileUploadRef.current.files) return;
         const uploadedFile = fileUploadRef.current.files[0];
-        const cachedURL = URL.createObjectURL(uploadedFile);
+        const cachedURL = URL.createObjectURL(uploadedFile as Blob|MediaSource);
         setImage(cachedURL);
       };
 
@@ -147,7 +151,7 @@ export default function EditProfile() : JSX.Element {
           if (imagePicked && image)
           { 
             const storageRef = ref(storage, `Users/${data.username}`);
-            const uploadTask = uploadBytesResumable(storageRef, profilePhoto);
+            const uploadTask = uploadBytesResumable(storageRef, profilePhoto as Blob | Uint8Array | ArrayBuffer);
             var photoURL = "";
             uploadTask.on(
               "state_changed",
@@ -179,7 +183,7 @@ export default function EditProfile() : JSX.Element {
           {
             await deleteDoc(doc(firestore, "Users", `${profile?.username}`));
           }
-          updateProfile(auth.currentUser, {
+          updateProfile(auth!.currentUser!, {
             displayName: data.username, photoURL: profilePhotoURL
           }).then(() => {
             //Profile updated!
@@ -200,7 +204,7 @@ export default function EditProfile() : JSX.Element {
 
     const passwordChange = async () => {
 
-      document.getElementById('passwordChangeModal').showModal();
+      
 
     }
     
@@ -249,7 +253,7 @@ export default function EditProfile() : JSX.Element {
                     <div className="avatar gap-4">
                         <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
                             {imagePicked ?
-                              <img src={image} width={256} height={256}/>
+                              <img src={image as string} width={256} height={256}/>
                               :
                               <img src={data.profilePhotoURL} width={256} height={256}/>
                             }
@@ -425,23 +429,7 @@ export default function EditProfile() : JSX.Element {
                     />
 
                 </div>
-                {
-                    data.links.map(function(link) {
-                        
-                        <input 
-                            type="text" 
-                            id="0"
-                            className="input input-bordered w-200"
-                            placeholder="Add Link"
-                            value={link}
-                            
-                            onChange={(e: any) => {
-                                setLinks(links => [...links, e.target.value]);
-                            }}
-                        />
-
-                    })
-                }
+                
                 <textarea 
                         className="textarea textarea-bordered w-100 h-60 resize-none"
                         placeholder="Bio"

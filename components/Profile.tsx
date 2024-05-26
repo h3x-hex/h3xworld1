@@ -1,6 +1,5 @@
 "use client";
 
-import { embeddedWallet, ThirdwebProvider, useAddress } from "app/thirdweb";
 import { useEffect, useState } from "react";
 import { PostType, UserProfileType } from "types/types";
 import BioCard from "./BioCard";
@@ -44,7 +43,7 @@ export default function Profile({ username }: IProps) {
       if (userProfileDoc.exists()) 
       {
         const profileObj = { ...userProfileDoc.data() };
-        setProfile(profileObj);
+        setProfile(profileObj as UserProfileType);
         console.log(profileObj);
         const postRef = collection(firestore, 'Posts');
         const q = query(postRef, where('username', '==', username));
@@ -56,7 +55,7 @@ export default function Profile({ username }: IProps) {
           console.log(doc.data());
           if(postsSs.length < profileObj.postCount)
           {
-            postsSs.push(doc.data());
+            postsSs.push(doc.data() as PostType);
           }
         });
         console.log(postsSs);
@@ -82,7 +81,6 @@ export default function Profile({ username }: IProps) {
           :
          <></>
         }
-        {console.log(posts)}
         { posts ?
 
           <Posts posts={ posts }/>

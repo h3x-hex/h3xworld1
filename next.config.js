@@ -6,16 +6,9 @@ await import("./env.js");
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-    experimental: {
-      appDir: true,
-      concurrentFeatures: false,
-    },
     images: {
       domains: ['firebasestorage.googleapis.com'],
     },  
-    reactStrictMode: true,
   }
   
-
-
 export default nextConfig;

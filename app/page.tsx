@@ -1,5 +1,3 @@
-import Link from "next/link";
-import Login from "components/Login";
 import LoginUser from "components/LoginUser";
 
 export default function HomePage() {

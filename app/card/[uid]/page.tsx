@@ -4,7 +4,6 @@ import { firestore } from "config/firebase.config";
 import { useEffect } from "react";
 import { setDoc, doc, getDoc, updateDoc, where, query, collection, getDocs } from "firebase/firestore";
 import { UserProfileType } from "types/types";
-import { Router } from "express";
 import { useRouter } from "node_modules/next/navigation";
 
 

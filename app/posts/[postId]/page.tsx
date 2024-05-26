@@ -7,34 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, firestore } from "config/firebase.config";
 import { Navbar } from "components/Navbar";
-import LexicalEditorWrapper from "components/LexicalEditorWrapper/index";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { MuiContentEditable, placeHolderSx } from "./styles";
-import { Box, Divider } from "@mui/material";
-import { lexicalEditorConfig } from "../../../config/lexicalEditorConfig";
-import LexicalEditorTopBar from "../../../components/LexicalEditorTopBar";
-import TreeViewPlugin from "../../components/CustomPlugins/TreeViewPlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import ImagesPlugin from "components/CustomPlugins/ImagePlugin";
-import FloatingTextFormatToolbarPlugin from "components/CustomPlugins/FloatingTextFormatPlugin";
-import {$generateHtmlFromNodes} from '@lexical/html';
-import lexicalEditorTheme from "../../theme/lexicalEditorTheme";
-import { AutoLinkNode, LinkNode } from "@lexical/link";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { TableNode, TableCellNode, TableRowNode } from "@lexical/table";
-import { ListNode, ListItemNode } from "@lexical/list";
-import { ImageNode } from "components/CustomNodes/ImageNode";
-import FullPost from "components/FullPost";
 import PostCard from "components/PostCard";
-import Comments from "components/Comments";
-import LinkedList from "node_modules/parchment/dist/src/collection/linked-list";
 
 const Page = ({ params }: { params: { postId: string } }) => {
 
@@ -114,7 +87,7 @@ const Page = ({ params }: { params: { postId: string } }) => {
       
 
 
-      return (
+    return (
       <> 
         <div className="bg-zinc-950">
           <Navbar isLoggedIn={isLoggedIn}/>

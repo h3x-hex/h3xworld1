@@ -1,15 +1,14 @@
 "use client"
 
 import LinkCardList from "./LinkCardList";
-import { firestore } from "@/config/firebase.config";
+import { firestore } from "../config/firebase.config";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { UserProfileType, UserIDType } from "types/AuthTypes";
+import { UserProfileType } from "../types/types";
 import BioCard from "./BioCard";
 import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
 import React from "react";
 import Wallet from "./Wallet";
 import FriendsGroupsModal from "./FriendsGroupsModal";
@@ -26,10 +25,6 @@ export default function ProfileCard ({profile}: IProps)
 
     const router = useRouter();
     const isUser = true;
-
-    const switchTab = (tab_id: string) => {
-
-    }
 
     return (
     <>
@@ -62,7 +57,7 @@ export default function ProfileCard ({profile}: IProps)
                                     {isUser ?
 
                                         <div className="pt-1">
-                                        <button className="btn" title="Edit Profile" onClick={() => router.push(`/profile/${profile.username}/edit`)}><span className="material-symbols-outlined">person_edit</span></button>  
+                                        <button className="btn" title="Edit Profile" onClick={() => router.push(`/edit/${profile.username}`)}><span className="material-symbols-outlined">person_edit</span></button>  
                                         </div>
                                     :
 
