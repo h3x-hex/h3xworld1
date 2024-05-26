@@ -6,7 +6,6 @@ import { firestore, storage } from "config/firebase.config";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 import Comments from "./Comments";
-import { use } from "chai";
 
 
 interface IProps{
