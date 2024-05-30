@@ -5,69 +5,43 @@ export interface LoginType {
 
 export interface PostType {
 
-	postBody: PostBody,
-	preview: PostPreview,
-	postUser: PostUser,
-
-}	
-
-export interface PostUser {
-
+	postId: string,
 	userId: string,
 	username: string,
 	fullName: string,
 	userPhotoURL: string,
-	location: string,
-	occupation: string,
-
-}
-
-export interface PostPreview {
-
-	postId: string;
 	postTitle: string,
 	postPreview: string,
 	previewPhotoURL: string,
-
-}
-
-export interface PostBody {
-
-	body: string,
-	comments: CommentType[],
 	commentsCount: number,
-	likes: string[],
 	likesCount: number,
 	timestamp: number,
-	postId: string,
 
 }	
 
 export interface ReplyType {
 
+	commentId: string,
 	username: string,
 	userId: string,
-	fullName: string,
 	userPhotoURL: string,
 	body: string,
 	timestamp: string,
-	likes: string[],
 	likesCount: number,
 	replyId: string,
 }
 
 export interface CommentType {
 
+	postId: string,
 	username: string,
 	userId: string,
-	fullName: string,
 	userPhotoURL: string,
 	body: string,
 	timestamp: string,
-	likes: string[],
 	likesCount: number,
 	commentId: string,
-	replies: ReplyType[]
+	replies: number
 
 }
 

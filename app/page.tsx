@@ -1,10 +1,12 @@
+"use client"
+
 import LoginUser from "components/LoginUser";
-import { useRouter } from "node_modules/next/navigation";
+import { useRouter } from "next/navigation";
 import { getAuth } from "firebase/auth";
+import { auth } from "config/firebase.config";
 
 export default function HomePage() {
 
-  const auth = getAuth()
   const user = auth.currentUser
   const router = useRouter();
 

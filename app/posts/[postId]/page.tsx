@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { getAuth } from "firebase/auth";
-import { PostBody, PostPreview, PostType, PostUser, UserProfileType } from "types/types";
+import { PostType, UserProfileType } from "types/types";
 import { useEffect, useRef, useState } from "react";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, firestore } from "config/firebase.config";
@@ -16,33 +16,21 @@ const Page = ({ params }: { params: { postId: string } }) => {
 
     var isLoggedIn = false;
 
-    if(user) isLoggedIn = true;
+    const [isData, setIsData] = useState<boolean>(false);
 
-    var postUser: PostUser = {
-        userId: "",
-        username: "",
-        fullName: "",
-        userPhotoURL: "",
-        location: "",
-        occupation: "",
-      };
-
-    var postBody : PostBody = {
-        body: "",
-        comments: [],
-        commentsCount: 0,
-        likes: [],
-        likesCount: 0,
-        timestamp: 0,
-        postId: "",
-      };
-
-    var preview : PostPreview = {
-        postTitle: "",
-        postPreview: "",
-        previewPhotoURL: "",
-        postId: "",
-      };
+    const [post, setPost] = useState<PostType>({
+      postId: "",
+      userId: "",
+      username: "",
+      fullName: "",
+      userPhotoURL: "",
+      postTitle: "",
+      postPreview: "",
+      previewPhotoURL: "",
+      commentsCount: 0,
+      likesCount: 0,
+      timestamp: 0,
+    });
 
     var profile : UserProfileType = {
         id: "",
@@ -59,9 +47,11 @@ const Page = ({ params }: { params: { postId: string } }) => {
         postCount: 0,
         friends: [],
       };
-
-    const [post, setPost] = useState<PostType>({preview, postBody, postUser});
     
+      if(user){
+        isLoggedIn = true;
+      }
+      
 
     useEffect(() => {
       async function getData(postId: string) {
@@ -71,11 +61,10 @@ const Page = ({ params }: { params: { postId: string } }) => {
         if (postDoc.exists()) 
         { 
           console.log(postDoc.data());
-          preview = postDoc.data().preview;
-          postBody = postDoc.data().postBody;
-          postUser = postDoc.data().postUser;
-          setPost({ preview: preview, postBody: postBody, postUser: postUser })
-          console.log(postBody);
+          setPost(postDoc.data() as PostType);
+          //console.log(postBody);
+          console.log(post)
+          setIsData(true);
         } else 
         {
           console.log("User Not Found");
@@ -84,15 +73,35 @@ const Page = ({ params }: { params: { postId: string } }) => {
         getData(postId);
     }, []);
 
+    const returnPost = () => {
+
       
+    }
 
 
     return (
-      <> 
-        <div className="bg-zinc-950">
-          <Navbar isLoggedIn={isLoggedIn}/>
-          <PostCard post={post} fullPost={true}/>      
-        </div>
+
+      <>
+      {
+        isData ?
+
+        <> 
+          <div className="bg-zinc-950">
+            <Navbar isLoggedIn={isLoggedIn}/>
+              {
+                user ?
+      
+                <PostCard post={post} fullPost={true} username={user!.displayName!}/>  
+                :
+                <PostCard post={post} fullPost={true}/>     
+      
+              }
+               
+          </div>
+        </>
+        :
+        <></>
+      }
       </>
     )
 }

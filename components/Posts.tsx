@@ -1,7 +1,8 @@
 "use client"
 
+import { auth } from "config/firebase.config"
 import Link from "node_modules/next/link"
-import { PostBody, PostPreview, PostType } from "types/types"
+import { PostType } from "types/types"
 import PostCard from "./PostCard"
 
 interface IProps {

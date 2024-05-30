@@ -47,7 +47,6 @@ export default function Profile({ username }: IProps) {
         console.log(profileObj);
         const postRef = collection(firestore, 'Posts');
         const q = query(postRef, where('username', '==', username));
-        //const q = query(collection(firestore, `Posts/`).where(firestore.FieldPath.documentId(), '==', username));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
