@@ -1,7 +1,7 @@
 # h3xWorld
 
 ## Web3 Mixed Reality Social Media for truly connecting people. 
-## Get your link up and Link up!
+### Get your link up and Link up!
 
 h3xWorld at its core revolves around mixed reality spaces, live connections, and a minimalistic approach to social media posts.
 
