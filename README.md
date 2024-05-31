@@ -7,4 +7,4 @@ h3xWorld is currently in beta and h3xCard holders gain access to h3xWorld beta.
 Sign up now and get your h3xCard.
 
 ## Join Now 
-h3x.world
+www.h3x.world
