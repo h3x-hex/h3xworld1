@@ -35,7 +35,6 @@
     "pino-pretty": "^11.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-file-viewer": "^1.2.1",
     "react-froala-wysiwyg": "^4.2.0",
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",

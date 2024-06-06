@@ -9,7 +9,6 @@ import {
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore, storage, auth } from "config/firebase.config";
 import { PostType, UserProfileType } from "types/types";
-import FileViewer from "react-file-viewer";
 
 
 
@@ -239,7 +238,6 @@ export default function CreatePost () {
                         <div className="container flex flex-col w-full py-12 items-start justify-start bg-zinc-900">
                             <div className="flex flex-row w-full h-96 px-48 pl-8">
                                 <div className="flex flex-col w-auto h-auto">     
-                                    <FileViewer fileType={fileExt} filePath={image}/>
                                     <input type={"file"} accept="image/*" className="px-32 pt-12" onChange={uploadFile} ref={fileUploadRef}/>
                                 </div>
                                 <div className="flex flex-col w-full pl-8 pt-8 gap-3">

@@ -45,7 +45,9 @@ const Page = ({ params }: { params: { postId: string } }) => {
         bio: "",
         profilePhotoURL: "",
         postCount: 0,
-        friends: [],
+        friendsCount: 0,
+        followersCount: 0,
+        followingCount: 0,
       };
     
       if(user){
