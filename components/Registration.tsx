@@ -11,6 +11,7 @@ import {useRouter} from "next/navigation";
 import { getDatabase, ref as dbRef, set } from "firebase/database";
 import { ethers } from "ethers";
 import * as bip39 from "bip39";
+import { useMediaQuery } from "react-responsive";
 
 export default function Registration() :JSX.Element {
 
@@ -45,6 +46,8 @@ export default function Registration() :JSX.Element {
       const [image, setImage] = useState<File | string>("https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg");
       const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
       const [buyCard, setBuyCard] = useState<boolean>(false);
+
+      const isMobile = useMediaQuery({ maxWidth: 1224 });
 
 
       const handleFileChange = (eImage: React.ChangeEvent<HTMLInputElement>) => {
@@ -230,169 +233,342 @@ export default function Registration() :JSX.Element {
 
           :
 
-          <div className="flex w-full justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
-            <div className="flex flex-col gap-4 py-12">
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
-                    <div className="avatar gap-4">
-                        <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                            <img src={image as string} width={256} height={256}/>
-                        </div>
-                    </div>
+            
+            isMobile?
 
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="file-input file-input-bordered w-full max-w-xs pl-60px" 
-                        onChange={uploadFile} 
-                        ref={fileUploadRef}
-                    />
+            <>
+              <div className="flex w-full justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
+                <div className="flex flex-col gap-4 py-12">
+                  <div className="flex flex-col gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
+                      <div className="avatar gap-4">
+                          <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                              <img src={image as string} width={256} height={256}/>
+                          </div>
+                      </div>
+
+                      <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="file-input file-input-bordered w-full max-w-xs pl-60px" 
+                          onChange={uploadFile} 
+                          ref={fileUploadRef}
+                      />
+                  </div>
+
+                  <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-40"
+                          placeholder="First Name"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              firstName: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text"
+                          className="input input-bordered w-40"
+                          placeholder="Last Name"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              lastName: e.target.value,
+                              });
+                          }}
+                      />
+
+                  </div>
+                      
+                  <input 
+                          type="text" 
+                          className="input input-bordered w-84"
+                          placeholder="Email"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              email: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-84"
+                          placeholder="Username"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              username: e.target.value,
+                              });
+                          }}
+                      />
+                      <input 
+                          type="password" 
+                          className="input input-bordered w-84"
+                          placeholder="Password"
+                          required
+                          onChange={(e: any) => {
+                              setPassword(e.target.value);
+                          }}
+                      />
+                  
+                  
+
+                  <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                      
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-40"
+                          placeholder="Location"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              location: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text"
+                          className="input input-bordered w-40"
+                          placeholder="Occupation"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              occupation: e.target.value,
+                              });
+                          }}
+                      />
+
+                  </div>
+
+                  <div className="flex flex-col gap-4" id="links">
+                      <input 
+                          type="text" 
+                          id="0"
+                          className="input input-bordered w-84"
+                          placeholder="Add Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                      <input 
+                          type="text" 
+                          id="1"
+                          className="input input-bordered w-84"
+                          placeholder="Add Additional Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                      <input 
+                          type="text" 
+                          id="2"
+                          className="input input-bordered w-84"
+                          placeholder="Add Additional Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                  </div>
+                  
+                  <textarea 
+                          className="textarea textarea-bordered w-100 h-60 resize-none"
+                          placeholder="Bio"
+                          required
+                          maxLength={256}
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              bio: e.target.value,
+                              });
+                          }}
+                      />
+
+                  <button className="btn btn-outline btn-warning" onClick={userRegister}>Next</button>
+                  <div className="divider divider-warning"></div>
+                  <button className="btn btn-outline btn-warning" onClick={userLogin}>Login</button>
                 </div>
+              </div>
+            </>
 
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
-                    <input 
-                        type="text" 
-                        className="input input-bordered w-50"
-                        placeholder="First Name"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            firstName: e.target.value,
-                            });
-                        }}
-                    />
+          :
 
-                    <input 
-                        type="text"
-                        className="input input-bordered w-50"
-                        placeholder="Last Name"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            lastName: e.target.value,
-                            });
-                        }}
-                    />
+            <>
+              <div className="flex w-full justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
+                <div className="flex flex-col gap-4 py-12">
+                  <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
+                      <div className="avatar gap-4">
+                          <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                              <img src={image as string} width={256} height={256}/>
+                          </div>
+                      </div>
 
+                      <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="file-input file-input-bordered w-full max-w-xs pl-60px" 
+                          onChange={uploadFile} 
+                          ref={fileUploadRef}
+                      />
+                  </div>
+
+                  <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-50"
+                          placeholder="First Name"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              firstName: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text"
+                          className="input input-bordered w-50"
+                          placeholder="Last Name"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              lastName: e.target.value,
+                              });
+                          }}
+                      />
+
+                  </div>
+                      
+                  <input 
+                          type="text" 
+                          className="input input-bordered w-100"
+                          placeholder="Email"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              email: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-100"
+                          placeholder="Username"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              username: e.target.value,
+                              });
+                          }}
+                      />
+                      <input 
+                          type="password" 
+                          className="input input-bordered w-100"
+                          placeholder="Password"
+                          required
+                          onChange={(e: any) => {
+                              setPassword(e.target.value);
+                          }}
+                      />
+                  
+                  
+
+                  <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                      
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-50"
+                          placeholder="Location"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              location: e.target.value,
+                              });
+                          }}
+                      />
+
+                      <input 
+                          type="text"
+                          className="input input-bordered w-50"
+                          placeholder="Occupation"
+                          required
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              occupation: e.target.value,
+                              });
+                          }}
+                      />
+
+                  </div>
+
+                  <div className="flex flex-col gap-4" id="links">
+                      <input 
+                          type="text" 
+                          id="0"
+                          className="input input-bordered w-200"
+                          placeholder="Add Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                      <input 
+                          type="text" 
+                          id="1"
+                          className="input input-bordered w-200"
+                          placeholder="Add Additional Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                      <input 
+                          type="text" 
+                          id="2"
+                          className="input input-bordered w-200"
+                          placeholder="Add Additional Link"
+                          onChange={(e: any) => {
+                              setLink(link => [...link, e.target.value]);
+                          }}
+                      />
+                  </div>
+                  
+                  <textarea 
+                          className="textarea textarea-bordered w-100 h-60 resize-none"
+                          placeholder="Bio"
+                          required
+                          maxLength={256}
+                          onChange={(e: any) => {
+                              setData({
+                              ...data,
+                              bio: e.target.value,
+                              });
+                          }}
+                      />
+
+                  <button className="btn btn-outline btn-warning" onClick={userRegister}>Next</button>
+                  <div className="divider divider-warning"></div>
+                  <button className="btn btn-outline btn-warning" onClick={userLogin}>Login</button>
                 </div>
-                    
-                <input 
-                        type="text" 
-                        className="input input-bordered w-100"
-                        placeholder="Email"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            email: e.target.value,
-                            });
-                        }}
-                    />
+              </div>
+            </>
 
-                    <input 
-                        type="text" 
-                        className="input input-bordered w-100"
-                        placeholder="Username"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            username: e.target.value,
-                            });
-                        }}
-                    />
-                    <input 
-                        type="password" 
-                        className="input input-bordered w-100"
-                        placeholder="Password"
-                        required
-                        onChange={(e: any) => {
-                            setPassword(e.target.value);
-                        }}
-                    />
-                
-                
-
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
-                    
-                    <input 
-                        type="text" 
-                        className="input input-bordered w-50"
-                        placeholder="Location"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            location: e.target.value,
-                            });
-                        }}
-                    />
-
-                    <input 
-                        type="text"
-                        className="input input-bordered w-50"
-                        placeholder="Occupation"
-                        required
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            occupation: e.target.value,
-                            });
-                        }}
-                    />
-
-                </div>
-
-                <div className="flex flex-col gap-4" id="links">
-                    <input 
-                        type="text" 
-                        id="0"
-                        className="input input-bordered w-200"
-                        placeholder="Add Link"
-                        onChange={(e: any) => {
-                            setLink(link => [...link, e.target.value]);
-                        }}
-                    />
-                    <input 
-                        type="text" 
-                        id="1"
-                        className="input input-bordered w-200"
-                        placeholder="Add Additional Link"
-                        onChange={(e: any) => {
-                            setLink(link => [...link, e.target.value]);
-                        }}
-                    />
-                    <input 
-                        type="text" 
-                        id="2"
-                        className="input input-bordered w-200"
-                        placeholder="Add Additional Link"
-                        onChange={(e: any) => {
-                            setLink(link => [...link, e.target.value]);
-                        }}
-                    />
-                </div>
-                
-                <textarea 
-                        className="textarea textarea-bordered w-100 h-60 resize-none"
-                        placeholder="Bio"
-                        required
-                        maxLength={256}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            bio: e.target.value,
-                            });
-                        }}
-                    />
-
-                <button className="btn btn-outline btn-warning" onClick={userRegister}>Next</button>
-                <div className="divider divider-warning"></div>
-                <button className="btn btn-outline btn-warning" onClick={userLogin}>Login</button>
-            </div>
-        </div>
-        }
+          }
       </>
     );
 }
