@@ -396,7 +396,8 @@ export default function Registration() :JSX.Element {
 
                   <button className="btn btn-outline btn-warning" onClick={userRegister}>Next</button>
                   <div className="divider divider-warning"></div>
-                  <button className="btn btn-outline btn-warning" onClick={userLogin}>Login</button>
+                  <button className="btn btn-outline text-gray-300" onClick={userLogin}>Go Back</button>
+                  <div className="pb-8"></div>
                 </div>
               </div>
             </>
@@ -563,7 +564,7 @@ export default function Registration() :JSX.Element {
 
                   <button className="btn btn-outline btn-warning" onClick={userRegister}>Next</button>
                   <div className="divider divider-warning"></div>
-                  <button className="btn btn-outline btn-warning" onClick={userLogin}>Login</button>
+                  <button className="btn btn-outline text-gray-300" onClick={userLogin}>Go Back</button>
                 </div>
               </div>
             </>
