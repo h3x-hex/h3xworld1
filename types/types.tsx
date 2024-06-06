@@ -3,6 +3,21 @@ export interface LoginType {
 	password: string;
 }
 
+export interface FollowerType {
+	username: string,
+	userPhotoURL: string,
+	followName: string,
+	followPhotoURL: string,
+}
+
+export interface WalletType {
+	username: string,
+	address: string,
+	privateKey: string,
+	publicKey: string,
+	seedPhrase: string,
+}
+
 export interface PostType {
 
 	postId: string,
@@ -26,7 +41,7 @@ export interface ReplyType {
 	userId: string,
 	userPhotoURL: string,
 	body: string,
-	timestamp: string,
+	timestamp: number,
 	likesCount: number,
 	replyId: string,
 }
@@ -38,7 +53,7 @@ export interface CommentType {
 	userId: string,
 	userPhotoURL: string,
 	body: string,
-	timestamp: string,
+	timestamp: number,
 	likesCount: number,
 	commentId: string,
 	replies: number
@@ -47,12 +62,13 @@ export interface CommentType {
 
 export interface FriendsType {
 
-	userId: string,
-	fullname: string,
 	username: string,
 	userPhotoURL: string,
-	dateAdded: string,
-
+	friendName: string,
+	friendPhotoURL: string,
+	dateAdded: number,
+	friendId: string,
+	
 }
 
 export interface GroupType {
@@ -96,8 +112,9 @@ export interface UserProfileType {
 	bio: string;
 	profilePhotoURL: string;
 	postCount: number;
-	friends: FriendsType[];
-
+	friendsCount: number;
+	followersCount: number;
+	followingCount: number;
 }
 
 export interface UserIDType {

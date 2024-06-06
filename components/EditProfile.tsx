@@ -9,6 +9,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { firestore, storage } from "config/firebase.config";
 import { useRouter } from "next/navigation";
 import { Navbar } from "./Navbar";
+import { useMediaQuery } from "react-responsive";
 
 interface IProps{
   username: string
@@ -33,7 +34,9 @@ export default function EditProfile({username}: IProps) : JSX.Element {
         bio: "",
         profilePhotoURL: "",
         postCount: 0,
-        friends: [],
+        friendsCount: 0,
+        followersCount: 0,
+	      followingCount: 0,
       });
 
       const [password, setPassword] = useState("");
@@ -244,211 +247,431 @@ export default function EditProfile({username}: IProps) : JSX.Element {
         console.log(data);
       }
 
+      const isMobile = useMediaQuery({ maxWidth: 1224 });
+
     return(
         <>
-        <Navbar isLoggedIn={isLoggedIn}/>
-        <div className="flex w-300 justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
-            <div className="flex flex-col gap-4 py-12">
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
-                    <div className="avatar gap-4">
-                        <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                            {imagePicked ?
-                              <img src={image as string} width={256} height={256}/>
-                              :
-                              <img src={data.profilePhotoURL} width={256} height={256}/>
-                            }
+
+        {
+
+          isMobile ?
+
+          <>
+            <Navbar isLoggedIn={isLoggedIn}/>
+              <div className="flex w-300 justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
+                  <div className="flex flex-col gap-4 py-12">
+                      <div className="flex flex-col gap-4 items-center py-12">
+                          <div className="avatar gap-4">
+                              <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                                  {imagePicked ?
+                                    <img src={image as string} width={256} height={256}/>
+                                    :
+                                    <img src={data.profilePhotoURL} width={256} height={256}/>
+                                  }
+                              </div>
+                          </div>
+
+                          <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="file-input file-input-bordered w-full max-w-xs pl-60px  bg-zinc-800 text-gray-300" 
+                              onChange={uploadFile} 
+                              ref={fileUploadRef}
+                          />
+
+                      </div>
+
+                      <div className="flex flex-row gap-4">
+                          <input 
+                              type="text" 
+                              className="input input-bordered w-40 bg-zinc-800 text-gray-300"
+                              placeholder="First Name"
+                              required
+                              value={data.firstName}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  firstName: e.target.value,
+                                  });
+                              }}
+                          />
+
+                          <input 
+                              type="text"
+                              className="input input-bordered w-40 bg-zinc-800 text-gray-300"
+                              placeholder="Last Name"
+                              required
+                              value={data.lastName}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  lastName: e.target.value,
+                                  });
+                              }}
+                          />
+
+                      </div>
+                          
+                      <div className="flex flex-row gap-4">
+                      <input 
+                          type="text" 
+                          className="input input-bordered w-48 bg-zinc-800 text-gray-300"
+                          placeholder="Email"
+                          required
+                          disabled
+                          value={data.email}
+                          onChange={(e: any) => {
+                            setData({
+                              ...data,
+                              email: e.target.value,
+                            });
+                          }}
+                        />
+                        <dialog id="emailChangeModal" className="modal">
+                          <div className="modal-box">
+                            <form method="dialog">
+                              {/* if there is a button in form, it will close the modal */}
+                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            </form>
+                            <h3 className="font-bold text-lg">Hello!</h3>
+                            <p className="py-4">Press ESC key or click on ✕ button to close</p>
+                          </div>
+                        </dialog>
+                        <button className="w-30" onClick={emailChange}>Change Email</button>
+                      </div>
+
+                      <div className="flex flex-row gap-4">
+                        <input 
+                            type="password" 
+                            className="input input-bordered w-48 bg-zinc-800 text-gray-300"
+                            placeholder="Password"
+                            required
+                            disabled
+                            onChange={(e: any) => {
+                              setPassword(e.target.value);
+                            }}
+                        />
+                        
+                        <dialog id="passwordChangeModal" className="modal">
+                          <div className="modal-box">
+                            <form method="dialog">
+                              {/* if there is a button in form, it will close the modal */}
+                              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            </form>
+                            <input 
+                                type="password" 
+                                className="input input-bordered w-[500px]  bg-zinc-800 text-gray-300"
+                                placeholder="Old Password"
+                                required
+                                disabled
+                                onChange={(e: any) => {
+                                  setPassword(e.target.value);
+                                }}
+                            />
+                            <input 
+                              type="password" 
+                              className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                              placeholder="New Password"
+                              required
+                              disabled
+                              onChange={(e: any) => {
+                                setPassword(e.target.value);
+                              }}
+                            />
+                            <input 
+                              type="password" 
+                              className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                              placeholder="New Password"
+                              required
+                              disabled
+                              onChange={(e: any) => {
+                                setPassword(e.target.value);
+                              }}
+                            />
+                          </div>
+                        </dialog>
+                        <button className="w-30" onClick={passwordChange}>Change Password</button>
+                      </div>
+                      
+
+                          <input 
+                              type="text" 
+                              className="input input-bordered w-84 bg-zinc-800 text-gray-300"
+                              placeholder="Username "
+                              required
+                              value={data.username}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  username: e.target.value,
+                                  });
+                              }}
+                          />
+                      
+
+                      <div className="flex flex-row gap-4">
+                          
+                          <input 
+                              type="text" 
+                              className="input input-bordered w-40 bg-zinc-800 text-gray-300"
+                              placeholder="Location"
+                              required
+                              value={data.location}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  location: e.target.value,
+                                  });
+                              }}
+                          />
+
+                          <input 
+                              type="text"
+                              className="input input-bordered w-40 bg-zinc-800 text-gray-300"
+                              placeholder="Occupation"
+                              required
+                              value={data.occupation}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  occupation: e.target.value,
+                                  });
+                              }}
+                          />
+
+                      </div>
+                      
+                      <textarea 
+                              className="textarea textarea-bordered w-84 h-60 resize-none bg-zinc-800 text-gray-300"
+                              placeholder="Bio"
+                              required
+                              maxLength={256}
+                              value={data.bio}
+                              onChange={(e: any) => {
+                                  setData({
+                                  ...data,
+                                  bio: e.target.value,
+                                  });
+                              }}
+                          />
+
+                      <button className="btn btn-outline btn-warning" onClick={userRegister}>Save Profile</button>
+                        <div className="divider divider-warning"></div>
+                      <button className="btn btn-outline text-gray-300" onClick={() => router.push(`/profile/${profile?.username}`)}>Go back</button>
+                  </div>
+              </div>
+          </>
+
+          :
+
+          <>
+            <Navbar isLoggedIn={isLoggedIn}/>
+            <div className="flex w-300 justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
+                <div className="flex flex-col gap-4 py-12">
+                    <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
+                        <div className="avatar gap-4">
+                            <div className="w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                                {imagePicked ?
+                                  <img src={image as string} width={256} height={256}/>
+                                  :
+                                  <img src={data.profilePhotoURL} width={256} height={256}/>
+                                }
+                            </div>
                         </div>
+
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="file-input file-input-bordered w-full max-w-xs pl-60px  bg-zinc-800 text-gray-300" 
+                            onChange={uploadFile} 
+                            ref={fileUploadRef}
+                        />
+
                     </div>
 
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="file-input file-input-bordered w-full max-w-xs pl-60px" 
-                        onChange={uploadFile} 
-                        ref={fileUploadRef}
-                    />
+                    <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                        <input 
+                            type="text" 
+                            className="input input-bordered w-80 bg-zinc-800 text-gray-300"
+                            placeholder="First Name"
+                            required
+                            value={data.firstName}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                firstName: e.target.value,
+                                });
+                            }}
+                        />
 
-                </div>
+                        <input 
+                            type="text"
+                            className="input input-bordered w-80 bg-zinc-800 text-gray-300"
+                            placeholder="Last Name"
+                            required
+                            value={data.lastName}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                lastName: e.target.value,
+                                });
+                            }}
+                        />
 
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                    </div>
+                        
+                    <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
                     <input 
                         type="text" 
-                        className="input input-bordered w-80"
-                        placeholder="First Name"
+                        className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                        placeholder="Email"
                         required
-                        value={data.firstName}
+                        disabled
+                        value={data.email}
                         onChange={(e: any) => {
-                            setData({
+                          setData({
                             ...data,
-                            firstName: e.target.value,
-                            });
+                            email: e.target.value,
+                          });
                         }}
-                    />
-
-                    <input 
-                        type="text"
-                        className="input input-bordered w-80"
-                        placeholder="Last Name"
-                        required
-                        value={data.lastName}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            lastName: e.target.value,
-                            });
-                        }}
-                    />
-
-                </div>
-                    
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
-                <input 
-                    type="text" 
-                    className="input input-bordered w-[500px]"
-                    placeholder="Email"
-                    required
-                    disabled
-                    value={data.email}
-                    onChange={(e: any) => {
-                      setData({
-                        ...data,
-                        email: e.target.value,
-                      });
-                    }}
-                  />
-                  <dialog id="emailChangeModal" className="modal">
-                    <div className="modal-box">
-                      <form method="dialog">
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                      </form>
-                      <h3 className="font-bold text-lg">Hello!</h3>
-                      <p className="py-4">Press ESC key or click on ✕ button to close</p>
+                      />
+                      <dialog id="emailChangeModal" className="modal">
+                        <div className="modal-box">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                          </form>
+                          <h3 className="font-bold text-lg">Hello!</h3>
+                          <p className="py-4">Press ESC key or click on ✕ button to close</p>
+                        </div>
+                      </dialog>
+                      <button className="w-30" onClick={emailChange}>Change Email</button>
                     </div>
-                  </dialog>
-                  <button className="w-30" onClick={emailChange}>Change Email</button>
-                </div>
 
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
-                  <input 
-                      type="password" 
-                      className="input input-bordered w-[500px]"
-                      placeholder="Password"
-                      required
-                      disabled
-                      onChange={(e: any) => {
-                        setPassword(e.target.value);
-                      }}
-                  />
-                  
-                  <dialog id="passwordChangeModal" className="modal">
-                    <div className="modal-box">
-                      <form method="dialog">
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                      </form>
+                    <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
                       <input 
                           type="password" 
-                          className="input input-bordered w-[500px]"
-                          placeholder="Old Password"
+                          className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                          placeholder="Password"
                           required
                           disabled
                           onChange={(e: any) => {
                             setPassword(e.target.value);
                           }}
                       />
-                      <input 
-                        type="password" 
-                        className="input input-bordered w-[500px]"
-                        placeholder="New Password"
-                        required
-                        disabled
-                        onChange={(e: any) => {
-                          setPassword(e.target.value);
-                        }}
-                      />
-                      <input 
-                        type="password" 
-                        className="input input-bordered w-[500px]"
-                        placeholder="New Password"
-                        required
-                        disabled
-                        onChange={(e: any) => {
-                          setPassword(e.target.value);
-                        }}
-                      />
+                      
+                      <dialog id="passwordChangeModal" className="modal">
+                        <div className="modal-box">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                          </form>
+                          <input 
+                              type="password" 
+                              className="input input-bordered w-[500px]  bg-zinc-800 text-gray-300"
+                              placeholder="Old Password"
+                              required
+                              disabled
+                              onChange={(e: any) => {
+                                setPassword(e.target.value);
+                              }}
+                          />
+                          <input 
+                            type="password" 
+                            className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                            placeholder="New Password"
+                            required
+                            disabled
+                            onChange={(e: any) => {
+                              setPassword(e.target.value);
+                            }}
+                          />
+                          <input 
+                            type="password" 
+                            className="input input-bordered w-[500px] bg-zinc-800 text-gray-300"
+                            placeholder="New Password"
+                            required
+                            disabled
+                            onChange={(e: any) => {
+                              setPassword(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </dialog>
+                      <button className="w-30" onClick={passwordChange}>Change Password</button>
                     </div>
-                  </dialog>
-                  <button className="w-30" onClick={passwordChange}>Change Password</button>
-                </div>
-                
-
-                    <input 
-                        type="text" 
-                        className="input input-bordered w-100"
-                        placeholder="Username"
-                        required
-                        value={data.username}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            username: e.target.value,
-                            });
-                        }}
-                    />
-                
-
-                <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
                     
-                    <input 
-                        type="text" 
-                        className="input input-bordered w-80"
-                        placeholder="Location"
-                        required
-                        value={data.location}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            location: e.target.value,
-                            });
-                        }}
-                    />
 
-                    <input 
-                        type="text"
-                        className="input input-bordered w-80"
-                        placeholder="Occupation"
-                        required
-                        value={data.occupation}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            occupation: e.target.value,
-                            });
-                        }}
-                    />
+                        <input 
+                            type="text" 
+                            className="input input-bordered w-100 bg-zinc-800 text-gray-300"
+                            placeholder="Username "
+                            required
+                            value={data.username}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                username: e.target.value,
+                                });
+                            }}
+                        />
+                    
 
+                    <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8">
+                        
+                        <input 
+                            type="text" 
+                            className="input input-bordered w-80 bg-zinc-800 text-gray-300"
+                            placeholder="Location"
+                            required
+                            value={data.location}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                location: e.target.value,
+                                });
+                            }}
+                        />
+
+                        <input 
+                            type="text"
+                            className="input input-bordered w-80 bg-zinc-800 text-gray-300"
+                            placeholder="Occupation"
+                            required
+                            value={data.occupation}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                occupation: e.target.value,
+                                });
+                            }}
+                        />
+
+                    </div>
+                    
+                    <textarea 
+                            className="textarea textarea-bordered w-100 h-60 resize-none bg-zinc-800 text-gray-300"
+                            placeholder="Bio"
+                            required
+                            maxLength={256}
+                            value={data.bio}
+                            onChange={(e: any) => {
+                                setData({
+                                ...data,
+                                bio: e.target.value,
+                                });
+                            }}
+                        />
+
+                    <button className="btn btn-outline btn-warning" onClick={userRegister}>Save Profile</button>
+                      <div className="divider divider-warning"></div>
+                    <button className="btn btn-outline text-gray-300" onClick={() => router.push(`/profile/${profile?.username}`)}>Go back</button>
                 </div>
-                
-                <textarea 
-                        className="textarea textarea-bordered w-100 h-60 resize-none"
-                        placeholder="Bio"
-                        required
-                        maxLength={256}
-                        value={data.bio}
-                        onChange={(e: any) => {
-                            setData({
-                            ...data,
-                            bio: e.target.value,
-                            });
-                        }}
-                    />
-
-                <button className="btn btn-outline btn-warning" onClick={userRegister}>Save Profile</button>
-                  <div className="divider divider-warning"></div>
-                <button className="btn btn-outline" onClick={() => router.push(`/profile/${profile?.username}`)}>Go back</button>
             </div>
-        </div>
+          </>
+
+        }
+        
         </>
     );
 }

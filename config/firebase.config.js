@@ -2,6 +2,7 @@ import { getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { getDatabase } from 'firebase/database';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -12,7 +13,7 @@ const firebaseConfig = {
 	storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
 	messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-	// measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -24,3 +25,4 @@ if (!getApps().length) {
 export const auth = getAuth();
 export const firestore = getFirestore();
 export const storage = getStorage();
+export const database = getDatabase();

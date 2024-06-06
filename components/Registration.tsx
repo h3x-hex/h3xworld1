@@ -2,21 +2,25 @@
 
 import { useAuth } from "context/AuthContext";
 import { ChangeEvent, MutableRefObject, useRef, useState } from "react";
-import { UserRegistrationType } from "types/types";
+import { UserProfileType, UserRegistrationType } from "types/types";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { firestore, storage } from "config/firebase.config";
 import {useRouter} from "next/navigation";
-
+import { getDatabase, ref as dbRef, set } from "firebase/database";
+import { ethers } from "ethers";
+import * as bip39 from "bip39";
 
 export default function Registration() :JSX.Element {
 
     const { signUp } = useAuth();
     const auth = getAuth();
     const router = useRouter();
+
+    const db = getDatabase();
     
-    const [data, setData] = useState<UserRegistrationType>({
+    const [data, setData] = useState<UserProfileType>({
         id: "",
         email: "",
         username: "",
@@ -27,7 +31,11 @@ export default function Registration() :JSX.Element {
         location: "",
         links: [],
         bio: "",
+        profilePhotoURL: "",
         postCount: 0,
+        friendsCount: 0,
+        followersCount: 0,
+        followingCount: 0,
       });
 
       const [password, setPassword] = useState("");
@@ -79,6 +87,24 @@ export default function Registration() :JSX.Element {
 
       }
 
+      const createWallet = async () => {
+
+        // Generate a random mnemonic (12 words)
+        const mnemonic = bip39.generateMnemonic();
+
+        // Derive the wallet from the mnemonic
+        const wallet = ethers.Wallet.fromPhrase(mnemonic);
+
+        console.log("Mnemonic:", mnemonic);
+        console.log("Address:", wallet.address);
+        console.log("Private Key:", wallet.privateKey);
+        console.log("Public Key:", wallet.publicKey);
+
+        const walletRef = doc(firestore, "Wallets", `${data.username}`);
+        setDoc(walletRef, { username: data.username, seedPhrase: mnemonic, address: wallet.address, privateKey: wallet.privateKey, publicKey: wallet.publicKey});
+
+      }
+
       const canSetUsername = async () => {
         const docRef = doc(firestore, "Users", `${data.username}`);
         const docSnap = await getDoc(docRef);
@@ -108,52 +134,54 @@ export default function Registration() :JSX.Element {
       const setUserProfile = async (user: any) => {
         const uid = user.user.uid;
         if (uid) {
-
             console.log(uid);
             const usersRef = doc(firestore, "Users", `${data.username}`);        
-        if (image)
-        { 
-          const storageRef = ref(storage, `Users/${data.username}`);
-          const uploadTask = uploadBytesResumable(storageRef, profilePhoto as Blob | Uint8Array | ArrayBuffer);
-          var photoURL = "";
-          uploadTask.on(
-            "state_changed",
-            (snapshot: { bytesTransferred: number; totalBytes: number; }) => {
-              const progress = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
-            },
-            (error: any) => {
-              alert(error);
-            },
-            () => {
-              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL: string) => {
-    
-                console.log(downloadURL);
-                photoURL = downloadURL;
-                console.log(photoURL);
-                console.log(link);
+          if (image)
+          { 
+            const storageRef = ref(storage, `Users/${data.username}`);
+            const uploadTask = uploadBytesResumable(storageRef, profilePhoto as Blob | Uint8Array | ArrayBuffer);
+            var photoURL = "";
+            uploadTask.on(
+              "state_changed",
+              (snapshot: { bytesTransferred: number; totalBytes: number; }) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+              },
+              (error: any) => {
+                alert(error);
+              },
+              () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL: string) => {
+      
+                  console.log(downloadURL);
+                  photoURL = downloadURL;
+                  console.log(photoURL);
+                  console.log(link);
 
-                setDoc(usersRef, data);
-                setDoc(usersRef, { id: uid, profilePhotoURL: photoURL, links:link, posts: [] }, { merge: true });
+                  setDoc(usersRef, data);
+                  setDoc(usersRef, { id: uid, profilePhotoURL: photoURL, links:link, posts: [] }, { merge: true });
 
-                updateProfile(auth!.currentUser!, {
-                  displayName: data.username, photoURL: photoURL
-                }).then(() => {
-                  // Profile updated!
-                  // ...
-                  router.push(`/profile/${data.username}`);
-                  setBuyCard(true);
-                }).catch((error: any) => {
-                  // An error occurred
-                  // ...
+                  updateProfile(auth!.currentUser!, {
+                    displayName: data.username, photoURL: photoURL
+                  }).then(() => {
+                    // Profile updated!
+                    // ...
+                    //Create Wallet
+                    console.log("Registration Complete")
+                    createWallet();
+                    router.push(`/profile/${data.username}`);
+                    setBuyCard(true);
+                  }).catch((error: any) => {
+                    // An error occurred
+                    // ...
+                  });
                 });
-              });
-            }
-          );          
+              }
+            );          
+          }
         }
       }
-    }
     
           
       const userRegister = async () => {
@@ -163,9 +191,9 @@ export default function Registration() :JSX.Element {
 
         console.log(data);
 
-        const { id, postCount, ...allData } = data;
+        const { id, postCount, friendsCount, followersCount, followingCount, ...allData } = data;
         // Disable submit button until all fields are filled in
-        const canSubmit = [...Object.values(allData)].every(Boolean);
+        const canSubmit = true //[...Object.values(allData)].every(Boolean);
 
         if (canSubmit)
         {
@@ -173,9 +201,11 @@ export default function Registration() :JSX.Element {
             try {
                 if (await canSetEmail()) {
                   if (await canSetUsername()) {
-                        const user = await signUp(data.email, password);
+                        console.log("Signing Up")
+                        const user = await signUp(data.email, password)
                         if(user)
                         {
+                          console.log("Setting up profile")
                           await setUserProfile(user);
                         }
                   }
@@ -363,6 +393,6 @@ export default function Registration() :JSX.Element {
             </div>
         </div>
         }
-        </>
+      </>
     );
 }

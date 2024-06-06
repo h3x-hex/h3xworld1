@@ -1,5 +1,3 @@
-"use client"
-
 import { CommentType, PostType } from "types/types"
 import { useEffect, useRef, useState } from "react";
 import { getAuth } from "firebase/auth";
@@ -11,19 +9,20 @@ import { StringSupportOption } from "prettier";
 import { useMediaQuery } from 'react-responsive';
 
 
+
 interface IProps{
   post: PostType;
   fullPost?: boolean;
 }
 
-export default function PostCard ({post, fullPost}: IProps) {
+export default function HomePostCard ({post, fullPost}: IProps) {
 
     console.log(post.postId);
 
     const auth = getAuth();
     const user = auth.currentUser;
     const router = useRouter();
-
+    const isMobile = useMediaQuery({ maxWidth: 1224 });
     
     const [isLiked, setIsLiked] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>("");
@@ -33,9 +32,7 @@ export default function PostCard ({post, fullPost}: IProps) {
     const [comments, setComments] = useState<CommentType[]>([]);
     var commentsArr: CommentType[] = [];
 
-    const isMobile = useMediaQuery({ maxWidth: 1224 });
-
-    console.log(isMobile);
+    console.log(post);
 
     
     const updateComments = ( newComments: CommentType[], updatedPost: PostType) => {
@@ -187,164 +184,95 @@ export default function PostCard ({post, fullPost}: IProps) {
     return (
     <>
     {
-      isMobile ?
+      isMobile?
 
-      fullPost? 
-
-      <>
-        <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
-        </div>
-        <div className="w-full items-end justify-end pt-3">
-          <div className="flex flex-row cursor-pointer pl-6" onClick={() => router.push(`/profile/${post.username}`)}>
-            <div className="avatar">
-              <div className="flex flex-row w-20 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                <img src={post.userPhotoURL} width={64} height={64}/>
+      <div className="container flex flex-col pt-6 px-3 items-center justify-center pb-3 text-gray-300">
+          <div className="card w-full h-auto bg-zinc-900 shadow-xl cursor-pointer">
+            <div className="card-body w-full h-auto flex-col">
+              <div className="flex flex-row items-start justify-start gap-6 bg-zinc-900 border-1" onClick={() => router.push(`/profile/${post.username}`)}>
+                <div className="avatar flex flex-row">
+                  <div className="flex flex-row w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                    <img src={post.userPhotoURL} width={96} height={96}/>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="mt-6 text-xl">{post.fullName}</h1>
+                  <h1 className="text-l">@{post.username}</h1>
+                </div>
               </div>
-            </div> 
-            <div className="flex flex-col pl-3 text-gray-300">
-              <h1 className="mt-3 text-xl">{post.fullName}</h1>
-              <h1 className="text-l">@{post.username}</h1>
-            </div>
-          </div>
-          <div className="divider divider-warning w-full"></div>
-            <div>
-              <div className="flex flex-col py-1 px-6 text-gray-300">
-                <div className="flex flex-col w-full">
+              <div className="flex flex-col pt-3">
+                <div className="flex flex-col w-12/12" onClick={() => router.push(`/posts/${post.postId}`)}>
                   <h1 className="text-xl">{post.postTitle}</h1>
                   <h3 className="text-l text-wrap break-words pt-3">{post.postPreview}</h3>
+                  <img className="pt-3" src={post.previewPhotoURL} width="auto" height="auto"/>   
                 </div>
-                                  
-                <div className="flex flex-row pt-8 ">
+                <div className="flex flex-row pt-8">
                 {
                   isLiked ?
-                              
+                                    
                   <>
                     <button className="btn btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
                   </>
-                                
+
                   :
 
                   <>
                     <button className="btn btn-outline btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
-                  </>   
+                  </>  
 
-                }
-
-                <div className="pl-24"></div>
-                  <button className="btn btn-ghost btn-circle btn-warning" onClick={addComment}><span className="material-symbols-outlined">comment</span></button><p className="pl-3 pt-3">{post.commentsCount}</p>
+                } 
+                <button className="btn btn-ghost btn-circle btn-warning" onClick={() => router.push(`/posts/${post.postId}`)}><span className="material-symbols-outlined">comment</span></button><p className="pl-3 pt-3">{post.commentsCount}</p>
                 </div>
-                <div className="container pt-8 w-full">
-                  <div className="flex flex-row gap-24">
-                      <p className="text-xl pt-3">Comments</p>
-                      <button className="btn btn-circle btn-warning btn-outline w-36 " onClick={addComment}>Add Comment</button>
-                  </div>
-                  <div className="divider w-full"></div>
-                </div>
-                {
-                  user ?
-
-                  <Comments comments={comments} post={post} updateComments={updateComments}/>
-                  :
-                  <Comments comments={comments} post={post}  updateComments={updateComments}/>
-
-                }
               </div>
-            </div>
-        </div>
-      </>
-
-      :
-
-      <>
-        <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
-        </div>
-      </>
-      
-
-      :
-
-      
-        fullPost ?
-        
-        <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300 min-w-full">
-          <div className="card w-full  bg-zinc-900 shadow-xl px-6">
-            <div className="card-body w-full  flex-col">
-              <div className="flex flex-row gap-6 bg-zinc-900 border-1">
-                <div className="w-7/12 items-start justify-start">
-                  <img className="" src={post.previewPhotoURL} width="auto" height="auto"/>
-                </div>
-              <div className="w-5/12 items-end justify-end pt-1">
-                <div className="flex flex-row cursor-pointer" onClick={() => router.push(`/profile/${post.username}`)}>
-                  <div className="avatar">
-                    <div className="flex flex-row w-20 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                      <img src={post.userPhotoURL} width={64} height={64}/>
-                    </div>
-                  </div> 
-                  <div className="flex flex-col px-6">
-                    <h1 className="mt-3 text-xl">{post.fullName}</h1>
-                    <h1 className="text-l">@{post.username}</h1>
-                  </div>
-                </div>
-                <div className="divider divider-warning w-full"></div>
-                  <div>
-                    <div className="flex flex-col py-1 items-start justify-start ">
-                      <div className="flex flex-col w-12/12">
-                        <h1 className="text-xl">{post.postTitle}</h1>
-                        <h3 className="text-l text-wrap break-words pt-3">{post.postPreview}</h3>
-                      </div>
-                                        
-                      <div className="flex flex-row pt-8">
-                      {
-                        isLiked ?
-                                    
-                        <>
-                          <button className="btn btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
-                        </>
-                                      
-                        :
-
-                        <>
-                          <button className="btn btn-outline btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
-                        </>   
-
-                      }
-
-                      <div className="pl-24"></div>
-                        <button className="btn btn-ghost btn-circle btn-warning" onClick={addComment}><span className="material-symbols-outlined">comment</span></button><p className="pl-3 pt-3">{post.commentsCount}</p>
-                      </div>
-                      <div className="container pt-8 w-full">
-                        <div className="flex flex-row">
-                            <p className="text-xl pt-3">Comments</p>
-                            <button className="btn btn-circle btn-warning btn-outline w-36" onClick={addComment}>Add Comment</button>
-                        </div>
-                        <div className="divider w-full"></div>
-                      </div>
-                      {
-                        user ?
-
-                        <Comments comments={comments} post={post} updateComments={updateComments}/>
-                        :
-                        <Comments comments={comments} post={post}  updateComments={updateComments}/>
-
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>  
             </div>
           </div>       
         </div>
-        
-         
-        :
 
-        <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
+      :
+    
+        <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300">
+          <div className="card w-7/12 h-auto bg-zinc-900 shadow-xl px-6 cursor-pointer">
+            <div className="card-body w-full h-auto flex-col">
+              <div className="flex flex-row items-start justify-start gap-6 bg-zinc-900 border-1" onClick={() => router.push(`/profile/${post.username}`)}>
+                <div className="avatar flex flex-row">
+                  <div className="flex flex-row w-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                    <img src={post.userPhotoURL} width={96} height={96}/>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="mt-6 text-xl">{post.fullName}</h1>
+                  <h1 className="text-l">@{post.username}</h1>
+                </div>
+              </div>
+              <div className="flex flex-col pt-3">
+                <div className="flex flex-col w-12/12" onClick={() => router.push(`/posts/${post.postId}`)}>
+                  <h1 className="text-xl">{post.postTitle}</h1>
+                  <h3 className="text-l text-wrap break-words pt-3">{post.postPreview}</h3>
+                  <img className="pt-3" src={post.previewPhotoURL} width="auto" height="auto"/>   
+                </div>
+                <div className="flex flex-row pt-8">
+                {
+                  isLiked ?
+                                    
+                  <>
+                    <button className="btn btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
+                  </>
+
+                  :
+
+                  <>
+                    <button className="btn btn-outline btn-circle btn-warning" onClick={updateLike}><span className="material-symbols-outlined">favorite</span></button><p className="pl-3 pt-3">{post.likesCount}</p>
+                  </>  
+
+                } 
+                <button className="btn btn-ghost btn-circle btn-warning" onClick={() => router.push(`/posts/${post.postId}`)}><span className="material-symbols-outlined">comment</span></button><p className="pl-3 pt-3">{post.commentsCount}</p>
+                </div>
+              </div>
+            </div>
+          </div>       
         </div>
-      
       }
+      
       <dialog id="comment_modal" className="modal">
             <div className="modal-box h-auto bg-zinc-900">
                 <form method="dialog">
@@ -354,7 +282,7 @@ export default function PostCard ({post, fullPost}: IProps) {
                 </form>
                 <h3 className="font-bold text-lg text-gray-300">Add Comment</h3>
                 <div className="flex flex-row pt-3 pb-12">
-                    <div className="avatar flex flex-row items-start justify-start w-2/12 pr-4">
+                    <div className="avatar flex flex-row items-start justify-start w-2/12">
                         <div className="flex flex-row w-12 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
                             <img src={user!.photoURL!} width={24} height={24}/>
                         </div>
@@ -363,7 +291,6 @@ export default function PostCard ({post, fullPost}: IProps) {
                 </div>
             </div>
         </dialog>
-       
     </>
-  )
+    )
 }

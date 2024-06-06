@@ -86,17 +86,11 @@ const Page = ({ params }: { params: { postId: string } }) => {
         isData ?
 
         <> 
-          <div className="bg-zinc-950">
+          <div className="bg-zinc-950 w-full">
             <Navbar isLoggedIn={isLoggedIn}/>
-              {
-                user ?
-      
-                <PostCard post={post} fullPost={true} username={user!.displayName!}/>  
-                :
+              <div className="w-full items-center justify-center">
                 <PostCard post={post} fullPost={true}/>     
-      
-              }
-               
+              </div>
           </div>
         </>
         :

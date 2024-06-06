@@ -38,8 +38,8 @@ export default function RequestsTab () {
                             </td>
                             <th>
                             <div className="flex flex-row pl-32 gap-8">
-                                    <div className=""><button className="btn btn-circle px-3" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
-                                    <div className=""><button className="btn btn-circle px-3" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
+                                    <div className=""><button className="btn btn-circle btn-success px-3" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
+                                    <div className=""><button className="btn btn-circle btn-error px-3" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
                             </div>
                             </th>
                         </tr>
@@ -60,8 +60,8 @@ export default function RequestsTab () {
                             </td>
                             <th>
                             <div className="flex flex-row  pl-32 gap-8">
-                                <div className=""><button className="btn btn-circle px-3" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
-                                <div className=""><button className="btn btn-circle px-3" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
+                                <div className=""><button className="btn btn-circle px-3 btn-success" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
+                                <div className=""><button className="btn btn-circle px-3 btn-error" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
                             </div>
                             </th>
                         </tr>
@@ -82,8 +82,8 @@ export default function RequestsTab () {
                             </td>
                             <th>
                             <div className="flex flex-row pl-32 gap-8">
-                                    <div className=""><button className="btn btn-circle px-3" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
-                                    <div className=""><button className="btn btn-circle px-3" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
+                                    <div className=""><button className="btn btn-circle px-3 btn-success" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
+                                    <div className=""><button className="btn btn-circle px-3 btn-error" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
                             </div>
                             </th>
                         </tr>
@@ -104,8 +104,8 @@ export default function RequestsTab () {
                             </td>
                             <th>
                                 <div className="flex flex-row pl-32 gap-8">
-                                    <div className=""><button className="btn btn-circle px-3" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
-                                    <div className=""><button className="btn btn-circle px-3" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
+                                    <div className=""><button className="btn btn-circle px-3 btn-success" onClick={confirmRequest}><span className="material-symbols-outlined text-xl">check_circle</span></button></div>
+                                    <div className=""><button className="btn btn-circle px-3 btn-error" onClick={cancelRequest}><span className="material-symbols-outlined">cancel</span></button></div>
                                 </div>
                             </th>
                         </tr>

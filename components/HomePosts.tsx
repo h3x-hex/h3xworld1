@@ -4,23 +4,24 @@ import { auth } from "config/firebase.config"
 import Link from "node_modules/next/link"
 import { PostType } from "types/types"
 import PostCard from "./PostCard"
+import HomePostCard from "./HomePostCard"
 
 interface IProps {
   posts: PostType[]
 }
 
-export default function Posts ({posts}: IProps){
+export default function HomePosts ({posts}: IProps){
 
     console.log("Posts: ", posts);
 
     return (
       <>
-        <div className="flex items-center justify-center w-fit pb-32">
-          <div className="grid grid-cols-3 gap-3 w-fit">
+         <div className="min-w-full w-fit pb-32">
+          <div className="flex flex-col gap-3 w-fit">
               {posts.length > 0 ? 
                 posts.map((post) => (
                   <>
-                    <PostCard post={ post } fullPost={false}/>
+                    <HomePostCard post={ post } fullPost={false}/>
                     
                   </>
               ))

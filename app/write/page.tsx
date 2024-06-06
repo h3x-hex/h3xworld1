@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/navigation";
 import { ChangeEvent, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import {
@@ -9,7 +11,10 @@ import {
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore, storage, auth } from "config/firebase.config";
 import { PostType, UserProfileType } from "types/types";
-import FileViewer from "react-file-viewer";
+import { useMediaQuery } from "react-responsive";
+import Image from "next/image";
+import { hexLogo } from "public";
+import { Navbar } from "components/Navbar";
 
 
 
@@ -95,6 +100,7 @@ export default function CreatePost () {
     };
 
     const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
+    const isMobile = useMediaQuery({ maxWidth: 1224 });
     
     useEffect(() => {
       async function getData(username: string) {
@@ -232,24 +238,29 @@ export default function CreatePost () {
     return (
 
         <>
-            
-                <div className="flex h-auto w-auto bg-zinc-900">
-                    
-                    <div className="flex flex-col container w-full bg-zinc-900">
-                        <div className="container flex flex-col w-full py-12 items-start justify-start bg-zinc-900">
-                            <div className="flex flex-row w-full h-96 px-48 pl-8">
-                                <div className="flex flex-col w-auto h-auto">     
-                                    <FileViewer fileType={fileExt} filePath={image}/>
+        {
+            isMobile ?
+
+            <>
+                <Navbar write={true} isLoggedIn={true}/>
+                <div className="flex w-full bg-zinc-900 items-center justify-center">
+                    <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center pt-16">
+                        <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">
+                            <div className="flex flex-col w-full">
+                                <div className="flex flex-col w-auto h-auto pl-8">     
+                                    <div className="avatar">
+                                        <div className="w-80 rounded">
+                                            <img src={image as string} />
+                                        </div>
+                                    </div>
                                     <input type={"file"} accept="image/*" className="px-32 pt-12" onChange={uploadFile} ref={fileUploadRef}/>
                                 </div>
-                                <div className="flex flex-col w-full pl-8 pt-8 gap-3">
+                               
+                                <div className="flex flex-col w-full px-3 pt-8 gap-3">
                                   <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
                                   <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
-                                  <div className="pl-32">
-                                    <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
-                                  <form method="dialog" className="modal_backdrop">
-                                    <button>close</button>
-                                  </form>
+                                  <div className="items-center justify-center pb-8">
+                                    <button className="btn btn-circle btn-warning btn-outline w-36 px-32" onClick={uploadPost}>Publish</button>
                                   </div>
                                 </div>
                             </div>
@@ -257,6 +268,38 @@ export default function CreatePost () {
                         <div className="container h-24"></div>
                     </div>
                 </div>
+            </>
+
+            :
+            <>
+            <Navbar write={true} isLoggedIn={true}/>
+                <div className="flex w-full bg-zinc-900 items-center justify-center">
+                    <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center">
+                        <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">
+                            <div className="flex flex-col w-full pl-8">
+                                <div className="flex flex-row w-auto h-auto">     
+                                    <div className="avatar">
+                                        <div className="w-96 rounded">
+                                            <img src={image as string} />
+                                        </div>
+                                    </div>
+                                    <input type={"file"} accept="image/*" className="px-32 pt-12" onChange={uploadFile} ref={fileUploadRef}/>
+                                </div>
+                               
+                                <div className="flex flex-col w-full  pt-8 gap-3">
+                                  <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
+                                  <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
+                                  <div className="">
+                                    <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
+                                  </div>
+                                </div>
+                            </div>
+                            </div>
+                        <div className="container h-24"></div>
+                    </div>
+                </div>
+                </>
+        }
         </>
 
     )

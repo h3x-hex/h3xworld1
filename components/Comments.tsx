@@ -8,26 +8,30 @@ import { time } from "console";
 import { CommentType, PostType } from "types/types";
 import { useRouter } from "node_modules/next/navigation";
 import CommentCard from "./CommentCard";
+import { getDatabase } from "firebase/database";
+import { useMediaQuery } from 'react-responsive';
+
 
 interface IProps{
     comments: CommentType[]
     post: PostType
-    userFullname?: string
-    updateComments: boolean
-    setUpdateComments: Dispatch<SetStateAction<boolean>>
+    updateComments: any
 }
 
-export default function Comments ({ comments, post, userFullname, updateComments, setUpdateComments }: IProps) {
+export default function Comments ({ comments, post, updateComments}: IProps) {
 
     const auth = getAuth();
     const user = auth.currentUser;
     const router = useRouter();
 
+    
     const [commentBody, setCommentBody] = useState<string>("");
+    const isMobile = useMediaQuery({ maxWidth: 1224 });
+
 
     console.log(comments);
 
-    const postComment = () => {
+    const updateReplies = () => {
 
 
 
@@ -52,25 +56,27 @@ export default function Comments ({ comments, post, userFullname, updateComments
             const timestamp = new Date().getTime();
             const commentId = user!.displayName! + timestamp
             const commentRef = doc(firestore, 'Comments', `${commentId}`);
-            setDoc(commentRef, {
+            const newComment: CommentType = {
                 postId: post.postId, 
-                username: user.displayName, 
+                username: user!.displayName!, 
                 userId: user.uid, 
-                userPhotoURL: user.photoURL,
+                userPhotoURL: user!.photoURL!,
                 body: commentBody,
                 timestamp: timestamp,
                 likesCount: 0,
                 commentId: commentId,
                 replies: 0,
-            });
+            }
+            setDoc(commentRef, newComment);
             setCommentBody("");
 
             const postRef = doc(firestore, 'Posts', `${post.postId}`);
-            setDoc(postRef, {commentsCount: post.commentsCount + 1}, { merge: true })
+            post.commentsCount += 1;
+            setDoc(postRef, {commentsCount: post.commentsCount}, { merge: true })
+            comments.unshift(newComment)
             //if (document && user) {(document.getElementById('comment_modal') as HTMLFormElement).close()}
-
+            updateComments(comments, post);
         }
-        setUpdateComments(!updateComments);
 
     }
 
@@ -78,18 +84,12 @@ export default function Comments ({ comments, post, userFullname, updateComments
     return (
 
         <>
-        <div className="container pt-8 w-full overflow-y-scroll">
-            <div className="flex flex-row">
-                <p className="text-xl pt-3">Comments</p>
-                <button className="btn btn-circle btn-warning btn-outline w-36" onClick={addComment}>Add Comment</button>
-            </div>
-            <div className="divider w-full"></div>
-        </div>
+        <div className="w-full">
         {
             comments.length > 0 ? 
 
             comments.map((comment) => (
-                <CommentCard comment={comment} post={post} updateComments={updateComments} setUpdateComments={setUpdateComments}/>
+                <CommentCard comment={comment} comments={comments} post={post} updateComments={updateComments}/>
             ))
 
             :
@@ -97,24 +97,8 @@ export default function Comments ({ comments, post, userFullname, updateComments
             <>
             </>
         }
-        <dialog id="comment_modal" className="modal">
-            <div className="modal-box h-auto">
-                <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    <button className="btn btn-circle btn-warning btn-outline w-36 absolute bottom-3 right-3" onClick={uploadComment}>Post Comment</button>
-                </form>
-                <h3 className="font-bold text-lg">Add Comment</h3>
-                <div className="flex flex-row pt-3 pb-12">
-                    <div className="avatar flex flex-row items-start justify-start w-2/12">
-                        <div className="flex flex-row w-12 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
-                            <img src={user!.photoURL!} width={24} height={24}/>
-                        </div>
-                    </div>
-                    <textarea className="textarea textarea-bordered w-full resize-none h-64 pb-16" placeholder="Write your comment..." value={commentBody} onChange={(e: any) => {setCommentBody(e.target.value)}}></textarea>
-                </div>
-            </div>
-        </dialog>
+        </div>
+        
         
         </>
     )
