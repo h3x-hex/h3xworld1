@@ -194,9 +194,17 @@ export default function Registration() :JSX.Element {
 
         console.log(data);
 
-        const { id, postCount, friendsCount, followersCount, followingCount, ...allData } = data;
+        const allData = {
+          username: data.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          fullName: data.fullName,
+          occupation: data.occupation,
+          location: data.location,
+          bio: data.bio,
+        };
         // Disable submit button until all fields are filled in
-        const canSubmit = true //[...Object.values(allData)].every(Boolean);
+        const canSubmit = [Object.values(allData)].every(Boolean);
 
         if (canSubmit)
         {
@@ -284,7 +292,7 @@ export default function Registration() :JSX.Element {
 
                   </div>
                       
-                  <input 
+                    <input 
                           type="text" 
                           className="input input-bordered w-84"
                           placeholder="Email"
@@ -306,7 +314,7 @@ export default function Registration() :JSX.Element {
                               setData({
                               ...data,
                               username: e.target.value,
-                              });
+                            });
                           }}
                       />
                       <input 
@@ -548,7 +556,6 @@ export default function Registration() :JSX.Element {
                           }}
                       />
                   </div>
-                  
                   <textarea 
                           className="textarea textarea-bordered w-100 h-60 resize-none"
                           placeholder="Bio"
