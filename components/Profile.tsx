@@ -52,27 +52,33 @@ export default function Profile({ username }: IProps) {
       const userProfileDoc = await getDoc(userProfileRef);
       const walletDoc = await getDoc(walletRef);
       //const postsDoc = await getDoc(postRef);
-      if (userProfileDoc.exists() && walletDoc.exists()) 
+      if (userProfileDoc.exists() ) 
       {
-        const profileObj = { ...userProfileDoc.data() };
-        setProfile(profileObj as UserProfileType);
-        console.log(profileObj);
-        const postRef = collection(firestore, 'Posts');
-        const q = query(postRef, where('username', '==', username));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          console.log(doc.data());
-          if(postsSs.length < profileObj.postCount)
-          {
-            postsSs.push(doc.data() as PostType);
-          }
-        });
-        console.log(postsSs);
-        setPosts(postsSs);
-        setWallet(walletDoc.data() as WalletType);
-        return profile;
+        if(walletDoc.exists())
+        {
+          const profileObj = { ...userProfileDoc.data() };
+          setProfile(profileObj as UserProfileType);
+          console.log(profileObj);
+          const postRef = collection(firestore, 'Posts');
+          const q = query(postRef, where('username', '==', username));
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            console.log(doc.data());
+            if(postsSs.length < profileObj.postCount)
+            {
+              postsSs.push(doc.data() as PostType);
+            }
+          });
+          console.log(postsSs);
+          setPosts(postsSs);
+          setWallet(walletDoc.data() as WalletType);
+          return profile;
+        }
+        else{
+          console.log("Wallet not found");
+        }
       } 
       else 
       {

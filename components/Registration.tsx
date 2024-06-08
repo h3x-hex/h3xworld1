@@ -13,7 +13,7 @@ import { ethers } from "ethers";
 import * as bip39 from "bip39";
 import { useMediaQuery } from "react-responsive";
 
-export default function Registration() :JSX.Element {
+export default function Registration() {
 
     const { signUp } = useAuth();
     const auth = getAuth();
@@ -75,7 +75,6 @@ export default function Registration() :JSX.Element {
           setProfilePhoto(file);
           setImagePicked(true);
           handleUpload();
-          console.log(image);
           //uploadProfilePhoto(file);
         }
         else{
@@ -109,6 +108,16 @@ export default function Registration() :JSX.Element {
       }
 
       const canSetUsername = async () => {
+        
+        for (let i = 0; i < data.username.length; i++)
+        {
+            if (data.username[i] === " ")
+            {
+              alert("No Spaces in username.");
+              return false;
+            }
+        }
+
         const docRef = doc(firestore, "Users", `${data.username}`);
         const docSnap = await getDoc(docRef);
     
@@ -204,7 +213,15 @@ export default function Registration() :JSX.Element {
           bio: data.bio,
         };
         // Disable submit button until all fields are filled in
-        const canSubmit = [Object.values(allData)].every(Boolean);
+        var canSubmit = true;
+
+        if(data.username === "") canSubmit = false;
+        if(data.firstName === "") canSubmit = false;
+        if(data.lastName === "") canSubmit = false;
+        if(data.fullName === "") canSubmit = false;
+        if(data.location === "") canSubmit = false;
+        if(data.occupation === "") canSubmit = false;
+        if(data.bio === "") canSubmit = false;
 
         if (canSubmit)
         {
