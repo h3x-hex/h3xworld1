@@ -18,11 +18,6 @@ import { Navbar } from "components/Navbar";
 import dynamic from 'next/dynamic';
 import { Editor } from '@tinymce/tinymce-react';
 
-const CustomEditor = dynamic( () => {
-  return import( '../../../components/custom-editor' );
-}, { ssr: false } );
-
-
 
 export default function CreatePost () {
 
