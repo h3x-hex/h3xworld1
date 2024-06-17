@@ -34,6 +34,8 @@ export default function EditProfile({username}: IProps) : JSX.Element {
         bio: "",
         profilePhotoURL: "",
         postCount: 0,
+        blogPostCount: 0,
+        h3XclusivePostCount: 0,
         friendsCount: 0,
         followersCount: 0,
 	      followingCount: 0,
@@ -257,7 +259,7 @@ export default function EditProfile({username}: IProps) : JSX.Element {
           isMobile ?
 
           <>
-            <Navbar isLoggedIn={isLoggedIn}/>
+            <Navbar/>
               <div className="flex w-300 justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
                   <div className="flex flex-col gap-4 py-12">
                       <div className="flex flex-col gap-4 items-center py-12">
@@ -465,7 +467,7 @@ export default function EditProfile({username}: IProps) : JSX.Element {
           :
 
           <>
-            <Navbar isLoggedIn={isLoggedIn}/>
+            <Navbar/>
             <div className="flex w-300 justify-center items-center gap-4  bg-gradient-to-b from-[#101010] to-[#1d1d1d]">
                 <div className="flex flex-col gap-4 py-12">
                     <div className="flex flex-row gap-4 sm:grid-cols-2 md:gap-8 items-center py-12">
