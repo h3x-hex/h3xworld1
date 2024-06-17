@@ -108,7 +108,7 @@ export default function LoginUser () {
                 <div className="flex flex-col gap-4">
                         <input 
                                 type="text" 
-                                className="input input-bordered w-full"
+                                className="input input-bordered w-full text-gray-950"
                                 placeholder="Email"
                                 onChange={(e: any) => {
                                     setData({
@@ -119,7 +119,7 @@ export default function LoginUser () {
                             />
                             <input 
                                 type="password" 
-                                className="input input-bordered w-80"
+                                className="input input-bordered w-80 text-gray-950"
                                 placeholder="Password"
                                 onChange={(e: any) => {
                                     setData({
