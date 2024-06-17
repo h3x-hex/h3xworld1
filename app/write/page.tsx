@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { ChangeEvent, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import {
   getStorage,
@@ -101,6 +101,9 @@ export default function CreatePost () {
 
     const fileUploadRef = useRef() as MutableRefObject<HTMLInputElement>;
     const isMobile = useMediaQuery({ maxWidth: 1224 });
+    const [initState, setInitState] = useState<boolean>(true);
+    const portfolioState = useState<boolean>(false);
+    const blogState = useState<boolean>(false);
     
     useEffect(() => {
       async function getData(username: string) {
@@ -233,72 +236,61 @@ export default function CreatePost () {
     const openCreatePost = () => {
         if(document) {(document.getElementById('post_modal') as HTMLFormElement).showModal();}
     }
+    
 
     
     return (
 
         <>
         {
+
             isMobile ?
-
             <>
-                <Navbar write={true} isLoggedIn={true}/>
-                <div className="flex w-full bg-zinc-900 items-center justify-center">
-                    <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center pt-16">
-                        <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">
-                            <div className="flex flex-col w-full">
-                                <div className="flex flex-col w-auto h-auto pl-8">     
-                                    <div className="avatar">
-                                        <div className="w-80 rounded">
-                                            <img src={image as string} />
-                                        </div>
-                                    </div>
-                                    <input type={"file"} accept="image/*" className="px-32 pt-12" onChange={uploadFile} ref={fileUploadRef}/>
-                                </div>
-                               
-                                <div className="flex flex-col w-full px-3 pt-8 gap-3">
-                                  <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
-                                  <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
-                                  <div className="items-center justify-center pb-8">
-                                    <button className="btn btn-circle btn-warning btn-outline w-36 px-32" onClick={uploadPost}>Publish</button>
-                                  </div>
-                                </div>
-                            </div>
-                            </div>
-                        <div className="container h-24"></div>
-                    </div>
-                </div>
+            <Navbar isLoggedIn={true} write={true}/>
+            <div className="flex flex-row h-screen items-center justify-center gap-3">
+  
+            <button className="btn btn-square w-32 h-32" onClick={() => router.push("/write/portfolio")}>
+              <span className="material-symbols-outlined">add_photo_alternate</span>
+              Create Portfolio Post
+            </button>
+  
+            <button className="btn btn-square w-32 h-32" onClick={() => router.push("/write/blog")}>
+              <span className="material-symbols-outlined">contextual_token_add</span>
+              Create Blog Post
+            </button>
+
+            <button className="btn btn-square w-32 h-32" onClick={() => router.push("/write/blog")}>
+              <span className="material-symbols-outlined">contextual_token_add</span>
+              Create h3Xclusive Post
+            </button>
+  
+            </div>
             </>
-
+  
             :
+  
             <>
-            <Navbar write={true} isLoggedIn={true}/>
-                <div className="flex w-full bg-zinc-900 items-center justify-center">
-                    <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center">
-                        <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">
-                            <div className="flex flex-col w-full pl-8">
-                                <div className="flex flex-row w-auto h-auto">     
-                                    <div className="avatar">
-                                        <div className="w-96 rounded">
-                                            <img src={image as string} />
-                                        </div>
-                                    </div>
-                                    <input type={"file"} accept="image/*" className="px-32 pt-12" onChange={uploadFile} ref={fileUploadRef}/>
-                                </div>
-                               
-                                <div className="flex flex-col w-full  pt-8 gap-3">
-                                  <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
-                                  <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
-                                  <div className="">
-                                    <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
-                                  </div>
-                                </div>
-                            </div>
-                            </div>
-                        <div className="container h-24"></div>
-                    </div>
-                </div>
-                </>
+            <Navbar isLoggedIn={true} write={true}/>
+            <div className="flex flex-row h-screen items-center justify-center gap-3">
+  
+            <button className="btn btn-square w-64 h-64" onClick={() => router.push("/write/portfolio")}>
+              <span className="material-symbols-outlined">add_photo_alternate</span>
+              Create Portfolio Post
+            </button>
+  
+            <button className="btn btn-square w-64 h-64" onClick={() => router.push("/write/blog")}>
+              <span className="material-symbols-outlined">contextual_token_add</span>
+              Create Blog Post
+            </button>
+
+            <button className="btn btn-square w-64 h-64" onClick={() => router.push("/write/h3Xclusive")}>
+              <span className="material-symbols-outlined">box_add</span>
+              Create h3Xclusive Post
+            </button>
+  
+            </div>
+            </>
+          
         }
         </>
 

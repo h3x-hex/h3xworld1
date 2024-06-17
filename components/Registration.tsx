@@ -34,6 +34,8 @@ export default function Registration() {
         bio: "",
         profilePhotoURL: "",
         postCount: 0,
+        blogPostCount: 0,
+        h3XclusivePostCount: 0,
         friendsCount: 0,
         followersCount: 0,
         followingCount: 0,

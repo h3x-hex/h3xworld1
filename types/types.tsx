@@ -34,6 +34,55 @@ export interface PostType {
 
 }	
 
+export interface BlogPostType {
+
+	postId: string,
+	userId: string,
+	username: string,
+	fullName: string,
+	userPhotoURL: string,
+	postTitle: string,
+	postPreview: string,
+	previewPhotoURL: string,
+	value: string,
+	commentsCount: number,
+	likesCount: number,
+	timestamp: number,
+
+}	
+
+export interface StoreContentType {
+
+	postId: string,
+	userId: string,
+	username: string,
+	fullName: string,
+	userPhotoURL: string,
+	postTitle: string,
+	postPreview: string,
+	previewPhotoURL: string,
+	commentsCount: number,
+	likesCount: number,
+	timestamp: number,
+
+}	
+
+export interface H3XclusivePostType {
+
+	postId: string,
+	userId: string,
+	username: string,
+	fullName: string,
+	userPhotoURL: string,
+	postTitle: string,
+	postPreview: string,
+	previewPhotoURL: string,
+	commentsCount: number,
+	likesCount: number,
+	timestamp: number,
+
+}	
+
 export interface ReplyType {
 
 	commentId: string,
@@ -44,6 +93,24 @@ export interface ReplyType {
 	timestamp: number,
 	likesCount: number,
 	replyId: string,
+}
+
+export interface ChatType {
+
+	chatId: string,
+	recipientName: string,
+	recipientId: string,
+	recipientPhotoURL: string,
+	
+}
+
+export interface MessageType {
+
+	username: string,
+	userPhotoURL: string,
+	timestamp: number,
+	message: string,
+
 }
 
 export interface CommentType {
@@ -112,6 +179,8 @@ export interface UserProfileType {
 	bio: string;
 	profilePhotoURL: string;
 	postCount: number;
+	blogPostCount: number;
+	h3XclusivePostCount: number;
 	friendsCount: number;
 	followersCount: number;
 	followingCount: number;

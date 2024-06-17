@@ -191,7 +191,7 @@ export default function ProfileCard ({profile, wallet}: IProps)
                                 {profile.fullName}
                             </h1>
                             <h4 className="font-extrabold tracking-tight text-xl pt-1">
-                                @{profile.username}
+                                @ {profile.username}
                             </h4>
                             
                             <div className="container flex flex-col py-3 items-center justify-center">
@@ -212,8 +212,8 @@ export default function ProfileCard ({profile, wallet}: IProps)
                                     {
                                         isUser ?
 
-                                            <div className="pt-1">
-                                            <button className="btn btn-outline bg-zinc-900 border-none" title="Edit Profile" onClick={() => router.push(`/edit/${profile.username}`)}><span className="material-symbols-outlined text-gray-300">person_edit</span></button>  
+                                            <div className="pt-1 w-full pl-1">
+                                            <button className="btn btn-outline bg-zinc-900 border-none w-60 text-gray-300" title="Edit Profile" onClick={() => router.push(`/edit/${profile.username}`)}>Edit Profile<span className="material-symbols-outlined text-gray-300">person_edit</span></button>  
                                             </div>
                                         :
 
@@ -252,7 +252,7 @@ export default function ProfileCard ({profile, wallet}: IProps)
                             </dialog>
                             </>
                             :
-                            <button className="btn btn-outline bg-zinc-900 border-none" title="Send Crypto"><span className="material-symbols-outlined text-gray-300">currency_bitcoin</span></button>
+                            <button className="btn btn-outline bg-zinc-900 border-none" title="Send Message"><span className="material-symbols-outlined text-gray-300">chat</span></button>
                         }
                         
                         {
@@ -331,7 +331,7 @@ export default function ProfileCard ({profile, wallet}: IProps)
                                 {profile.fullName}
                             </h1>
                             <h4 className="font-extrabold tracking-tight text-xl pt-1">
-                                @{profile.username}
+                                @ {profile.username}
                             </h4>
                             
                             <div className="container flex flex-col py-3">
@@ -391,7 +391,7 @@ export default function ProfileCard ({profile, wallet}: IProps)
                             </dialog>
                             </>
                             :
-                            <button className="btn btn-outline bg-zinc-900 border-none" title="Send Crypto"><span className="material-symbols-outlined text-gray-300">currency_bitcoin</span></button>
+                            <button className="btn btn-outline bg-zinc-900 border-none" title="Send Message"><span className="material-symbols-outlined text-gray-300">chat</span></button>
                         }
                         
                         {

@@ -22,7 +22,7 @@ export default function Wallet ({profile, wallet}: IProps) {
     const [activityTab, setActivityTab] = useState<boolean>(false);
     const [provider, setProvider] = useState<string>("Polygon MATIC");
     const [balance, setBalance] = useState<string>("");
-    const [walletValue, setWalletValue] = useState<string>("$8008.135");
+    const [walletValue, setWalletValue] = useState<string>("$0.00");
 
     const user = auth.currentUser;
 
@@ -400,10 +400,10 @@ export default function Wallet ({profile, wallet}: IProps) {
                 <button>Send</button>
                 <button>Cancel</button>
             </form>
-            <div className="modal-box w-full bg-zinc-900 items-center justify-center">
+            <div className="modal-box w-full bg-zinc-800 items-center justify-center">
                 <h3 className="font-bold text-lg pb-8 text-gray-300">Send Crypto</h3>
                 <input type="text" placeholder="Recipient Name" className="input input-bordered w-full text-gray-950" />
-                <div className="divider">or</div>
+                <div className="pt-3"></div>
                 <input type="text" placeholder="Recipient Address" className="input input-bordered w-full text-gray-950" />
                 <div className="py-3">
                     <input type="text" placeholder="Amount" className="input input-bordered w-full text-gray-950" />
