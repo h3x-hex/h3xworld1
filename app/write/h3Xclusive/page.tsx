@@ -76,6 +76,8 @@ export default function CreatePost () {
       bio: "",
       profilePhotoURL: "",
       postCount: 0,
+      blogPostCount: 0,
+      h3XclusivePostCount: 0,
       friendsCount: 0,
       followersCount: 0,
       followingCount: 0,
@@ -94,6 +96,8 @@ export default function CreatePost () {
       bio: "",
       profilePhotoURL: "",
       postCount: 0,
+      blogPostCount: 0,
+      h3XclusivePostCount: 0,
       friendsCount: 0,
       followersCount: 0,
       followingCount: 0,
@@ -286,7 +290,7 @@ export default function CreatePost () {
 
             :
             <>
-            <Navbar write={true} isLoggedIn={true}/>
+            <Navbar write={true}/>
                 <div className="flex w-full bg-zinc-900 items-center justify-center">
                     <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center">
                         <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">
