@@ -256,7 +256,7 @@ export default function CreatePost () {
             isMobile ?
 
             <>
-                <Navbar write={true} isLoggedIn={true}/>
+                <Navbar write={true}/>
                 <div className="flex w-full bg-zinc-900 items-center justify-center">
                     <div className="flex flex-col container h-screen w-full bg-zinc-900 items-center justify-center pt-16">
                         <div className="container flex flex-col w-full items-center justify-center bg-zinc-900">

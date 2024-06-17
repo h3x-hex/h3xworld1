@@ -47,7 +47,7 @@ export default function HomePage() {
           user ?
 
           <div className=" bg-zinc-950">
-            <Navbar isLoggedIn={true}/>
+            <Navbar/>
             <div className="">
                 
               { 

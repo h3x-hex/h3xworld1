@@ -246,7 +246,7 @@ export default function CreatePost () {
 
             isMobile ?
             <>
-            <Navbar isLoggedIn={true} write={true}/>
+            <Navbar write={true}/>
             <div className="flex flex-row h-screen items-center justify-center gap-3">
   
             <button className="btn btn-square w-32 h-32" onClick={() => router.push("/write/portfolio")}>
@@ -270,7 +270,7 @@ export default function CreatePost () {
             :
   
             <>
-            <Navbar isLoggedIn={true} write={true}/>
+            <Navbar write={true}/>
             <div className="flex flex-row h-screen items-center justify-center gap-3">
   
             <button className="btn btn-square w-64 h-64" onClick={() => router.push("/write/portfolio")}>

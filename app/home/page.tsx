@@ -90,7 +90,7 @@ export default function Page () {
     return (
 
         <div className=" bg-zinc-950">
-            <Navbar isLoggedIn={isLoggedIn}/>
+            <Navbar/>
             
             <div className="flex flex-row">
 
