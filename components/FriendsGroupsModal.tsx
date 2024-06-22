@@ -250,12 +250,12 @@ export default function FriendsGroupsModal ({ profile }: IProps) {
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div className="text-gray-300">{friend.username}</div>
+                                                        <div className="text-gray-300">{friend.friendName}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div className="flex flex-row pl-32 gap-6 pr-32">
+                                                <div className="flex flex-row  gap-6 pr-32">
                                                     {
                                                         !isMobile ?
                                                         
@@ -270,8 +270,6 @@ export default function FriendsGroupsModal ({ profile }: IProps) {
                                                             <div className="pr-8"><button className="btn btn-circle btn-error px-3" onClick={() => removeFriend(friend)}><span className="material-symbols-outlined">cancel</span></button></div>
                                                         </>
                                                     }
-                                                    
-                                                    
                                                 </div>
                                             </td>
                                         </tr>

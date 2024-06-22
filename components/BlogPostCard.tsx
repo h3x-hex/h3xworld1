@@ -1,6 +1,6 @@
 "use client"
 
-import { CommentType, PostType } from "types/types"
+import { BlogPostType, CommentType, PostType } from "types/types"
 import { useEffect, useRef, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "node_modules/next/navigation";
@@ -12,7 +12,7 @@ import { useMediaQuery } from 'react-responsive';
 
 
 interface IProps{
-  post: PostType;
+  post: BlogPostType;
   fullPost?: boolean;
 }
 
@@ -38,7 +38,7 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
     console.log(isMobile);
 
     
-    const updateComments = ( newComments: CommentType[], updatedPost: PostType) => {
+    const updateComments = ( newComments: CommentType[], updatedPost: BlogPostType) => {
 
       setComments(newComments);
       post = updatedPost;
@@ -257,8 +257,26 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
       :
 
       <>
-        <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
+        <div className="flex flex-col cursor-pointer w-screen items-center justify-center" onClick={() => router.push(`/posts/${post.postId}`)}>
+          <div className="flex flex-col text-gray-300 pl-16">
+            <img className="cursor-pointer" src={post.previewPhotoURL} width="256" height="256" />
+              <div className="flex flex-row">
+                <div className="avatar pt-6">
+                  <div className="flex flex-row w-16 h-16 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                    <img src={post.userPhotoURL} width={32} height={32}/>
+                  </div>
+                  <div className="flex flex-col pl-3 pb-8 text-gray-300">
+                    <h1 className="mt-3 text-xl font-bold">{post.fullName}</h1>
+                    <h1 className="text-md">@{post.username}</h1>
+                  </div>
+                </div> 
+              </div>
+              <div className="pr-3">
+                <p className="text-3xl font-bold">{post.postTitle}</p>
+                <p className="text-l">{post.postPreview}</p>
+              </div>
+          </div>
+          
         </div>
       </>
       
@@ -340,8 +358,27 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
          
         :
 
-        <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
+        <div className="flex flex-row cursor-pointer w-screen pl-24" onClick={() => router.push(`/posts/${post.postId}`)}>
+          <div className="flex flex-col text-gray-300 pl-3 w-9/12">
+              <div className="flex flex-row">
+                <div className="avatar pt-3">
+                  <div className="flex flex-row w-24 h-24 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
+                    <img src={post.userPhotoURL} width={64} height={64}/>
+                  </div>
+                  <div className="flex flex-col pl-3 pt-2 pb-3 text-gray-300">
+                    <h1 className="mt-3 text-xl font-bold">{post.fullName}</h1>
+                    <h1 className="text-md">@{post.username}</h1>
+                  </div>
+                </div> 
+              </div>
+              <div className="pr-3">
+                <p className="text-3xl font-bold">{post.postTitle}</p>
+                <p className="text-l">{post.postPreview}</p>
+              </div>
+          </div>
+          <div className="">
+            <img className="cursor-pointer" src={post.previewPhotoURL} width="256" height="256" />
+          </div>
         </div>
       
       }

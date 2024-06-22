@@ -178,8 +178,8 @@ export default function CreatePost () {
 
       const time = new Date().getTime();
       const uName = profile.username;
-      const postCount = profile.postCount + 1;
-      const postID =  uName + time + postCount;
+      const blogPostCount = profile.blogPostCount + 1;
+      const postID =  uName + time + blogPostCount;
       
       newPost = {
         postId: postID,
@@ -228,7 +228,7 @@ export default function CreatePost () {
                 const userRef = doc(firestore, `Users/${uName}`);
                 const postRef = doc(firestore, `BlogPosts/${postID}`);
 
-                setDoc(userRef, { postCount: postCount }, { merge: true });
+                setDoc(userRef, { blogPostCount: blogPostCount }, { merge: true });
                 setDoc(postRef, {...newPost}, { merge: true });
                 
                 console.log(post);
