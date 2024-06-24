@@ -196,7 +196,7 @@ export default function CreatePost () {
 
       if (previewImage)
         { 
-          setIsPublishing(false);
+          setIsPublishing(true);
           const storageRef = ref(storage, `Posts/${postID}`);
           const uploadTask = uploadBytesResumable(storageRef, previewImage);
           uploadTask.on(
