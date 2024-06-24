@@ -148,7 +148,7 @@ export default function Page () {
                             <div className="flex flex-col w-full h-16 bg-zinc-900">
                                 <div className="flex flex-row pl-3 pt-2">
                                     <div className="avatar">
-                                        <div className="w-12 h-12 rounded-full ">
+                                        <div className="w-12 h-12 rounded-full">
                                             <img src={chatUser.recipientPhotoURL} />
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@ export default function Page () {
                                     }
                                 </div>
                             </div>
-                            <div className="h-16 bg-zinc-950 flex flex-row w-full ">
+                            <div className="h-16 bg-zinc-900 flex flex-row w-full">
                                 <div className="pl-32 w-full pt-2">
                                     <input type="text" placeholder="Type your message here!!!" value={message} onChange={(e: any) => setMessage(e.target.value)} className="input input-bordered input-warning w-5/6 max-w-xs rounded-full "/>
                                 </div>

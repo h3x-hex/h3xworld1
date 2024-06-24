@@ -36,6 +36,7 @@
     "ethers": "^6.12.1",
     "firebase": "^10.11.1",
     "froala-editor": "^4.2.0",
+    "gltfjsx": "^6.2.18",
     "lexical": "^0.14.5",
     "mdi-material-ui": "^7.9.1",
     "next": "^14.2.3",

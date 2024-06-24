@@ -30,6 +30,8 @@ export default function CreatePost () {
     }
     var isLoggedIn = false;
 
+    const [isPublishing, setIsPublishing] = useState<boolean>(false);
+
     var newPost = 
     {
         postId: "",
@@ -194,6 +196,7 @@ export default function CreatePost () {
 
       if (previewImage)
         { 
+          setIsPublishing(false);
           const storageRef = ref(storage, `Posts/${postID}`);
           const uploadTask = uploadBytesResumable(storageRef, previewImage);
           uploadTask.on(
@@ -308,7 +311,15 @@ export default function CreatePost () {
                                   <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
                                   <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
                                   <div className="">
-                                    <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
+                                    {
+                                      isPublishing ?
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36 btn-disabled" tabIndex={-1} role="button" aria-disabled="true"><span className="loading loading-infinity loading-md text-warning"></span></button>
+
+                                      :
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
+                                    }
                                   </div>
                                 </div>
                             </div>

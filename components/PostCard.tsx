@@ -268,9 +268,9 @@ export default function PostCard ({post, fullPost}: IProps) {
       
         fullPost ?
         
-        <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300 min-w-full">
-          <div className="card w-full  bg-zinc-900 shadow-xl px-6">
-            <div className="card-body w-full  flex-col">
+        <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300 min-w-full h-full">
+          <div className="card h-full w-full  bg-zinc-900 shadow-xl px-6">
+            <div className="card-body h-full w-full  flex-col">
               <div className="flex flex-row gap-6 bg-zinc-900 border-1">
                 <div className="w-7/12 items-start justify-start">
                   <img className="" src={post.previewPhotoURL} width="auto" height="auto"/>
