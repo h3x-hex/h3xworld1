@@ -3,8 +3,8 @@
 import { createRoot } from 'react-dom/client'
 import { Canvas } from '@react-three/fiber'
 import { Navbar } from 'components/Navbar';
-import { OrbitControls } from '@react-three/drei'
-import { h3xHouse } from 'components/h3xHouse';
+import { OrbitControls } from '@react-three/drei';
+import h3xHouse  from 'components/h3xHouse';
 
 export default function Page () {
 
