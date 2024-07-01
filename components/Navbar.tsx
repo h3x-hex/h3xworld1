@@ -170,7 +170,8 @@ export const Navbar = ({write}: IProps) => {
                     <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold' onClick={() => router.push(`/profile/${user?.displayName}`)}>Profile</p>
                     <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold' onClick={() => router.push(`/profile/${user?.displayName}/chats`)}>Messages</p>
                     <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold' onClick={() => router.push(`/store/${user?.displayName}`)}>Store</p>
-                    <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold' onClick={() => router.push(`/h3xLife/${user?.displayName}`)}>h3xLife</p>
+                    <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold' onClick={() => router.push(`/h3xLife`)}>h3xLife</p>
+                    <p className='pl-8 pt-1 text-gray-300 cursor-pointer font-bold inline-block' onClick={() => router.push(`/adWall`)}>AdWall</p>
 
                     <div className='pl-8'>
                         <label className="input input-bordered flex items-center gap-2 rounded-full w-88">

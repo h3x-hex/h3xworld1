@@ -320,7 +320,7 @@ export default function ProfileCard ({profile, wallet}: IProps)
             <div className="card w-512 shadow-xl">
                 <div className="card-body">
                     <div className="flex items-center justify-center gap-12 pt-8 px-8 bg-zinc-950 border-1">
-                        <div className="avatar flex flex-row">
+                        <div className="avatar flex flex-row cursor-pointer" onClick={() => {if (document) {(document.getElementById('userImage') as HTMLFormElement).showModal();}}}>
                             <div className="flex flex-row w-64 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
                                 <img src={profile.profilePhotoURL} width={256} height={256}/>
                             </div>
@@ -433,6 +433,14 @@ export default function ProfileCard ({profile, wallet}: IProps)
             <BioCard bio={profile.bio}/>
         </div>
         }
+        <dialog id="userImage" className="modal">
+            <div className="modal-box w-full bg-zinc-900">
+                <img src={profile.profilePhotoURL} width={512} height={512}/>
+            </div>
+            <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
         <dialog id="followers" className="modal">
             <div className="modal-box w-full bg-zinc-900">
                 <Followers profile={profile} tab={tab}/>

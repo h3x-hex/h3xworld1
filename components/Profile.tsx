@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BlogPostType, H3XclusivePostType, PostType, StoreContentType, UserProfileType, WalletType } from "types/types";
+import { BlogPostType, H3XclusivePostType, PostType, StoreCategoryType, StoreContentType, StoreProductType, UserProfileType, WalletType } from "types/types";
 import BioCard from "./BioCard";
 import LinkCard from "./LinkCard";
 import LinkCardList from "./LinkCardList";
@@ -43,6 +43,9 @@ export default function Profile({ username }: IProps) {
   const [storeContent, setStoreContent] = useState<StoreContentType[]>([]);
   const [h3XclusivePosts, setH3XclusivePosts] = useState<H3XclusivePostType[]>([]);
   const [wallet, setWallet] = useState<WalletType>();
+
+  const [categories, setCategories] = useState<StoreCategoryType[]>([]);
+  const [products, setProducts] = useState<StoreProductType[]>([]);
 
   var postsSs : PostType[] = []
   var blogPostsSs : BlogPostType[] = []
@@ -287,9 +290,9 @@ export default function Profile({ username }: IProps) {
 
               :
 
-              <div className="flex items-center justify-center pl-44 pt-16">
-                <BlogPosts posts={ blogPosts }/>
-              </div>
+                <div className="flex items-center justify-center pl-44 pt-16">
+                  <BlogPosts posts={ blogPosts }/>
+                </div>
 
               :
 
@@ -306,159 +309,148 @@ export default function Profile({ username }: IProps) {
           tab === "store" ?
 
           <>
-            <div className="container flex flex-col h-full bg-zinc-950 items-center justify-center pb-96 pt-16">
-                    <div className="">
-                        <p className="text-6xl text-zinc-300 pb-32">h3x Marketplace</p>
+            <div className="text-gray-300 pb-96 pl-32">
+                <div>
+                    <div className="pt-8 pb-8">
+                        <p className="text-xl">Store Logo</p>
+                        <input type="file" className="file-input file-input-bordered w-full max-w-xs" />
                     </div>
-                    <div className="h-3/6 w-5/6 bg-zinc-300">
-                        <p>Hero</p>
+                    
+                </div>
+                <div className="pt-8 items-center justify-center pb-8">
+                    <p className="text-xl">Store Name</p>
+                    <input type="text" placeholder="Store Name" className="input input-bordered w-full max-w-xs text-gray-950" />
+                </div>
+                <div className="">
+                    <p className="text-xl">Hero Section</p>
+                    <div className="flex flex-row gap-3">
+                        <div className="artboard artboard-horizontal phone-6 bg-zinc-300">1024×320</div>
+                        <input type="file" className="file-input file-input-bordered w-full max-w-xs" />
                     </div>
-                    <div>
-                        <p className="pt-32 text-3xl text-gray-300 pb-8">Categories</p>
-                        <div className="grid gap-16 grid-cols-3">
-                            <div className="card w-96 bg-base-100 shadow-xl pb-8">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
+                </div>
+                <div className="flex">
+                    <div className="pt-8 flex flex-row">
+                        <p className="text-xl pb-8 pr-3">Categories</p>
+                        <button className="btn btn-sm btn-circle btn-outline text-gray-300 hover:bg-warning hover:text-gray-950" onClick={() => {if (document) {(document.getElementById('addCategory') as HTMLFormElement).showModal()}}}>
+                            <span className="material-symbols-outlined ">add</span>
+                        </button>
+                    </div>
+                </div>
+                <div className="pt-8">
+                    <div className="pt-8 flex flex-row">
+                        <p className="text-xl pb-8 pr-3">Products</p>
+                        <button className="btn btn-sm btn-circle btn-outline text-gray-300 hover:bg-warning hover:text-gray-950" onClick={() => {if (document) {(document.getElementById('addProduct') as HTMLFormElement).showModal()}}}>
+                            <span className="material-symbols-outlined ">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <dialog id="addCategory" className="modal">
+                <div className="modal-box w-96 bg-zinc-900">
+                    <div className="container text-gray-300 ">
+                        <div className="pb-8">
+                            <p className="text-xl pb-3">Category Name</p>
+                            <input type="text" placeholder="Category Name" className="input input-bordered w-full max-w-xs text-gray-950" />
                         </div>
-                    </div>
 
-                    <div>
-                        <p className="pt-32 text-3xl text-gray-300 pb-8">Products</p>
-                        <div className="grid gap-16 grid-cols-3">
-                            <div className="card w-96 bg-base-100 shadow-xl pb-8">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
+                        <div>
+                            <p className="text-xl pb-3">Category Image</p>
+                            <input type="file" className="file-input file-input-bordered w-full max-w-xs" />
+                            <img src={"https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} width={128} height={128}/>
+                        </div>
 
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl pb-8">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
-                                Shoes!
-                                <div className="badge badge-secondary">NEW</div>
-                                </h2>
-                                <p>If a dog chews shoes whose shoes does he choose?</p>
-                                <div className="card-actions justify-end">
-                                <div className="badge badge-outline">Fashion</div> 
-                                <div className="badge badge-outline">Products</div>
-                                </div>
-                            </div>
-                            </div>
+                        <div className="pt-8">
+                            <button className="btn btn-outline btn-warning w-24 rounded-full text-gray-300 hover:bg-warning hover:text-gray-950">
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+            <dialog id="addProduct" className="modal">
+                <div className="modal-box w-full bg-zinc-900">
+                    <div className="container flex flex-col text-gray-300">
+
+                        <div className="flex flex-col">
+                          <div className="pb-8">
+                            <p className="text-xl pb-3">Product Image</p>
+                            <input type="file" className="file-input file-input-bordered w-9/12" />
+                            <img src={"https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} width={128} height={128}/>
+                          </div>
+
+                          <div className="pb-8">
+                            <p className="text-xl pb-3">Product Name</p>
+                            <input type="text" placeholder="Product Name" className="input input-bordered w-9/12 text-gray-950" />
+                          </div>
+
+                          <div className="pb-8">
+                            <p className="text-xl pb-3">Product Description</p>
+                            <textarea className="textarea textarea-bordered w-9/12 h-64 resize-none text-gray-950" placeholder="Bio"></textarea>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-xl pb-3">Product Details</p>
+                          <div className="overflow-x-auto">
+                            <table className="table">
+                              {/* head */}
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Name</th>
+                                  <th>Job</th>
+                                  <th>Favorite Color</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {/* row 1 */}
+                                <tr>
+                                  <th>1</th>
+                                  <td>Cy Ganderton</td>
+                                  <td>Quality Control Specialist</td>
+                                  <td>Blue</td>
+                                </tr>
+                                {/* row 2 */}
+                                <tr>
+                                  <th>2</th>
+                                  <td>Hart Hagerty</td>
+                                  <td>Desktop Support Technician</td>
+                                  <td>Purple</td>
+                                </tr>
+                                {/* row 3 */}
+                                <tr>
+                                  <th>3</th>
+                                  <td>Brice Swyre</td>
+                                  <td>Tax Accountant</td>
+                                  <td>Red</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div className="pt-8">
+                            <button className="btn btn-outline btn-warning w-24 rounded-full text-gray-300 hover:bg-warning hover:text-gray-950">
+                                Add
+                            </button>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
+            <div className="pt-8 pb-16">
+              <button className="btn btn-outline btn-warning w-48 rounded-full text-gray-300 hover:bg-warning hover:text-gray-950">
+                  Create Store
+              </button>
+            </div>
           </>
 
           : 
@@ -466,9 +458,7 @@ export default function Profile({ username }: IProps) {
           tab === "h3Xclusive" ?
 
           <>
-            <h1 className="text-xl text-gray-300 pb-8 pt-32">x3nDant3's Realm</h1>
-            <button className="btn btn-warning">Enter the realm for $6.9/month</button>
-            <div className="pb-96"></div>
+            
           </>
 
           :

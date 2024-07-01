@@ -269,23 +269,24 @@ export default function PostCard ({post, fullPost}: IProps) {
         fullPost ?
         
         <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300 min-w-full h-full">
-          <div className="card h-full w-full  bg-zinc-900 shadow-xl px-6">
-            <div className="card-body h-full w-full  flex-col">
+          <div className="card h-full w-full bg-zinc-900 shadow-xl px-6">
+            <div className="card-body h-full w-full flex-col">
               <div className="flex flex-row gap-6 bg-zinc-900 border-1">
                 <div className="w-7/12 items-start justify-start">
                   <img className="" src={post.previewPhotoURL} width="auto" height="auto"/>
                 </div>
               <div className="w-5/12 items-end justify-end pt-1">
-                <div className="flex flex-row cursor-pointer" onClick={() => router.push(`/profile/${post.username}`)}>
-                  <div className="avatar">
+                <div className="flex flex-row cursor-pointer" >
+                  <div className="avatar " onClick={() => router.push(`/profile/${post.username}`)}>
                     <div className="flex flex-row w-20 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
                       <img src={post.userPhotoURL} width={64} height={64}/>
                     </div>
                   </div> 
-                  <div className="flex flex-col px-6">
+                  <div className="flex flex-col px-6" onClick={() => router.push(`/profile/${post.username}`)}>
                     <h1 className="mt-3 text-xl">{post.fullName}</h1>
                     <h1 className="text-l">@{post.username}</h1>
                   </div>
+                  <p className="text-gray-300">Send</p>
                 </div>
                 <div className="divider divider-warning w-full"></div>
                   <div>

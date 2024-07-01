@@ -90,9 +90,9 @@ const Page = ({ params }: { params: { postId: string } }) => {
         isData ?
 
         <> 
-          <div className="bg-zinc-950 h-screen w-full">
+          <div className="bg-zinc-950 h-full w-full">
             <Navbar />
-              <div className="w-full items-center justify-center">
+              <div className="h-full w-full items-center justify-center">
                 <PostCard post={post} fullPost={true}/>     
               </div>
           </div>

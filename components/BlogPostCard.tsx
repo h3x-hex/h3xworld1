@@ -9,6 +9,7 @@ import { setDoc, doc, getDoc, updateDoc, collection, query, where, getDocs, dele
 import Comments from "./Comments";
 import { StringSupportOption } from "prettier";
 import { useMediaQuery } from 'react-responsive';
+import { Markup } from 'interweave';
 
 
 interface IProps{
@@ -193,7 +194,7 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
 
       <>
         <div>
-          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/posts/${post.postId}`)}/>
+          <img className="cursor-pointer" src={post.previewPhotoURL} width="480" height="480" onClick={() => router.push(`/blog/${post.postId}`)}/>
         </div>
         <div className="w-full items-end justify-end pt-3">
           <div className="flex flex-row cursor-pointer pl-6" onClick={() => router.push(`/profile/${post.username}`)}>
@@ -257,7 +258,7 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
       :
 
       <>
-        <div className="flex flex-col cursor-pointer w-screen items-center justify-center" onClick={() => router.push(`/posts/${post.postId}`)}>
+        <div className="flex flex-col cursor-pointer w-screen items-center justify-center" onClick={() => router.push(`/blog/${post.postId}`)}>
           <div className="flex flex-col text-gray-300 pl-16">
             <img className="cursor-pointer" src={post.previewPhotoURL} width="256" height="256" />
               <div className="flex flex-row">
@@ -289,11 +290,9 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
         <div className="container flex flex-col pt-6 px-8 items-center justify-center pb-3 text-gray-300 min-w-full">
           <div className="card w-full  bg-zinc-900 shadow-xl px-6">
             <div className="card-body w-full  flex-col">
-              <div className="flex flex-row gap-6 bg-zinc-900 border-1">
-                <div className="w-7/12 items-start justify-start">
-                  <img className="" src={post.previewPhotoURL} width="auto" height="auto"/>
-                </div>
-              <div className="w-5/12 items-end justify-end pt-1">
+              <div className="flex flex-col gap-6 bg-zinc-900 border-1">
+                
+              <div className="w-full items-end justify-end pt-1 pb-3">
                 <div className="flex flex-row cursor-pointer" onClick={() => router.push(`/profile/${post.username}`)}>
                   <div className="avatar">
                     <div className="flex flex-row w-20 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-2">
@@ -304,13 +303,21 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
                     <h1 className="mt-3 text-xl">{post.fullName}</h1>
                     <h1 className="text-l">@{post.username}</h1>
                   </div>
+                  
+                </div>
+                <div className="w-full items-start justify-start pt-8">
+                  <img className="" src={post.previewPhotoURL} width="auto" height="auto"/>
                 </div>
                 <div className="divider divider-warning w-full"></div>
                   <div>
-                    <div className="flex flex-col py-1 items-start justify-start ">
-                      <div className="flex flex-col w-12/12">
-                        <h1 className="text-xl">{post.postTitle}</h1>
-                        <h3 className="text-l text-wrap break-words pt-3">{post.postPreview}</h3>
+                    <div className="flex flex-col py-1  ">
+                      <div className="flex flex-col w-12/12 items-center justify-center">
+                        <h1 className="text-3xl">{post.postTitle}</h1>
+                        <h3 className="text-2xl text-wrap break-words pt-3">{post.postPreview}</h3>
+                      </div>
+                      <div className="divider divider-warning w-full"></div>
+                      <div className="">
+                        <Markup content={post.value}/>
                       </div>
                                         
                       <div className="flex flex-row pt-8">
@@ -358,7 +365,7 @@ export default function BlogPostCard ({post, fullPost}: IProps) {
          
         :
 
-        <div className="flex flex-row cursor-pointer w-screen pl-24" onClick={() => router.push(`/posts/${post.postId}`)}>
+        <div className="flex flex-row cursor-pointer w-screen pl-24" onClick={() => router.push(`/blog/${post.postId}`)}>
           <div className="flex flex-col text-gray-300 pl-3 w-9/12">
               <div className="flex flex-row">
                 <div className="avatar pt-3">

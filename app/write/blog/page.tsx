@@ -32,7 +32,7 @@ export default function CreatePost () {
     var isLoggedIn = false;
 
     
-    
+    const [isPublishing, setIsPublishing] = useState<boolean>(false);
 
     var newPost = 
     {
@@ -203,6 +203,7 @@ export default function CreatePost () {
 
       if (previewImage)
         { 
+          setIsPublishing(true);
           const storageRef = ref(storage, `BlogPosts/${postID}`);
           const uploadTask = uploadBytesResumable(storageRef, previewImage);
           uploadTask.on(
@@ -275,8 +276,16 @@ export default function CreatePost () {
                                 <div className="flex flex-col w-full px-3 pt-8 gap-3">
                                   <input type="text" onChange={(e: any) => {setPost({...post, postTitle: e.target.value})}} placeholder="Post Title" className="input input-bordered w-full text-3xl text-gray-300 bg-zinc-800 py-3"/>
                                   <textarea placeholder="Post Preview" onChange={(e: any) => {setPost({...post, postPreview: e.target.value})}} className="textarea textarea-bordered w-full h-36 text-xl text-gray-300 bg-zinc-800 resize-none"/>
-                                  <div className="items-center justify-center pb-8">
-                                    <button className="btn btn-circle btn-warning btn-outline w-36 px-32" onClick={uploadPost}>Publish</button>
+                                  <div className="">
+                                    {
+                                      isPublishing ?
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36 btn-disabled" tabIndex={-1} role="button" aria-disabled="true"><span className="loading loading-infinity loading-md text-warning"></span></button>
+
+                                      :
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
+                                    }
                                   </div>
                                 </div>
                             </div>
@@ -327,9 +336,17 @@ export default function CreatePost () {
                                   onEditorChange={(newValue, editor) => setValue(newValue)}
                                 />
                               </div>
-                              <div className="items-center justify-center pt-8">
-                                      <button className="btn btn-circle btn-warning btn-outline w-36 px-32" onClick={uploadPost}>Publish</button>
-                                    </div>
+                              <div className="">
+                                    {
+                                      isPublishing ?
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36 btn-disabled" tabIndex={-1} role="button" aria-disabled="true"><span className="loading loading-infinity loading-md text-warning"></span></button>
+
+                                      :
+
+                                      <button className="btn btn-circle btn-warning btn-outline w-36" onClick={uploadPost}>Publish</button>
+                                    }
+                                  </div>
                         </div>
                         <div className="container h-24"></div>
                     </div>

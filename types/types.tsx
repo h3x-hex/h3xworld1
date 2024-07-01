@@ -18,6 +18,40 @@ export interface WalletType {
 	seedPhrase: string,
 }
 
+export interface StoreCategoryType {
+
+	categoryName: string,
+	categoryPhotoURL: string,
+
+}
+
+export interface ProductDetails {
+
+	detailTitle: string,
+	detailDescription: string,
+
+}
+
+export interface StoreProductType {
+
+	productName: string,
+	productPhotoURL: string,
+	productDescription: string,
+	productQuantity: string,
+	productDetails: ProductDetails[],
+
+}
+
+export interface StoreType {
+
+	storeName: string,
+	username: string,
+	storeLogoURL: string,
+	categories: StoreCategoryType[],
+	products: StoreProductType[],
+
+}
+
 export interface PostType {
 
 	postId: string,
@@ -102,6 +136,15 @@ export interface ChatType {
 	recipientId: string,
 	recipientPhotoURL: string,
 	
+}
+
+export interface ToDoType {
+
+	todo: string,
+	checked: boolean,
+	timestamp: number,
+	dueTimestamp?: number,
+
 }
 
 export interface MessageType {
